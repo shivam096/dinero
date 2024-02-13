@@ -107,8 +107,8 @@ with tab1:
 
     progress_bar = st.progress(0)
 
+
 with tab2:
-    st.header("News Headlines and Articles")
+    st.header(st.markdown("# News Headlines and Articles"))
     with st.expander("Headline"):
         st.write("This is the News Article (if relevant)")
-    st.dataframe(dummy_news_df)
