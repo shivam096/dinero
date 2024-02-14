@@ -1,3 +1,4 @@
+from pprint import pprint
 import pandas as pd
 import numpy as np
 
@@ -17,3 +18,17 @@ def find_count_value_change(file : str, value_change: int) -> list:
         change_df = stock_data[stock_data['Percent Change']<value_change]
     
     return change_df['Date'].to_list()
+
+
+
+def get_filter_dates(file_path: str, percent_change: int, stock_ticker : str):
+    dates_for_articles = find_count_value_change(file_path,percent_change)
+
+    news_articles_links = {}
+
+    for date in dates_for_articles:
+        api_response = get_news_articles(stock_ticker,date=date)
+        
+        news_articles_links[date] = [i['title'] for i in api_response if any(stock_ticker in symbol for symbol in i['symbols'])]
+        
+    return news_articles_links
