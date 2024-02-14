@@ -1,14 +1,19 @@
+from pprint import pprint
+from sentiment_analysis import get_sentiment_value
 from req import get_news_articles
-from transform import find_count_value_change
+from transform import get_filter_dates
 
 
-dates_for_articles = find_count_value_change("/Users/stlp/Documents/data557/final_project/dinero/data/AAPL.csv",5)
+
+sentiment_date = {}
+
+dates_dictionary = get_filter_dates("/Users/stlp/Documents/data557/final_project/dinero/data/AAPL.csv",5, "AAPL")
+
+pprint(dates_dictionary)
 
 
-news_articles_links = {}
-
-for date in dates_for_articles:
+for key,value in dates_dictionary.items():
     
-    news_articles_links[date] = get_news_articles('AAPL',date=date)
-
-print(news_articles_links)
+    sentiment_date[key] = get_sentiment_value(value)
+    
+pprint(sentiment_date)
