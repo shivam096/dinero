@@ -2,22 +2,27 @@
 
 ## Software Components
 
-### 1. Data Manager
+### Component 1. Data Manager
 
 #### Overview
 
 The Data Manager component is designed to build the static datasets by extracting stock data from Yahoo Finance and news data through EODHD API calls. Besides, it provides access to cleaned data formatted as required by other components of the project. 
 
+#### Interaction with Other Components
+
+Interacts with all other components. Only called by backend functions to retrieve subset of data from static database.
+
+
 #### Sub-component - `get_stock_data`
 
 **what it does**: collect stock data specified by company name and time through yfinance API call.
 
-**Input**: 
+**Input**:
 
 - company name (string): specific stock ticker symbol (e.g., AAPL for Apple Inc.)
 - period (string): stock data in what period, default value is 3 years
 
-**Output**
+**Output**:
 
 - csv files containing 3 years, unless otherwise specified, of stock information for companies: Microsoft, Google, Apple
 - columns: Open, High, Low, Close, Adj Close, Volume
@@ -32,10 +37,21 @@ The Data Manager component is designed to build the static datasets by extractin
 - start date (string): start timeframe of news, default value is 2021-01-01
 - end date (string): end timeframe of news, default value is 2024-02-01
 
-**Output**
+**Output**:
 
 - json files containing news data for specific companies starting from 3 years ago.
 - columns: title, date, content, url
+
+**Pseudocode**:
+```
+function get_news_data(company, start_date, end_date):
+
+    url = create_api_url(company, start_date, end_date)
+    news_data = requests.get(url)
+    format_news_data # clean and reformat raw data
+    update_database(news_data)
+return
+```
 
 #### Sub-component - `get_dataset`
 
@@ -52,89 +68,166 @@ The Data Manager component is designed to build the static datasets by extractin
 
 - subset of data as required (pandas dataframe)
 
-#### Interaction with Other Components
+### Component 2. Visualization Manager
 
-Interact with backend functions to retrieve subset of data from static database.
+#### Overview
 
+The visualization manager creates and controls all visualizations. 
 
-### 2. 
+#### Sub-component - `create_plot`
 
+**what it does**: create different plots from input dataframe.
 
+**Input**: dataframe (stock data / KPIs)
 
+**output**: 
 
-## Component 1 : Charts
-- access the data and create the chart
-- tooltips, labels, axes
-- data points (event button)
+- charts / line graph based on the input type
+- set readable tooltips, labels, axes
 
-## Component 2 : Interactivity
-- Filters
-    - date
-    - time
-    - company
-- Button
-    - KPI
-    - event
+#### Sub-component - `display_events`
 
-## Component 3 : Key Performance Indicators (KPIs)
-- textbox, piechart, stock data graph, etc (depends on the KPI metric)
+**what it does**: displays news articles and their titles specific to a chosen company.
 
-## Component 4 : Displaying Event Data (Title and Content)
-- (unsure)
+**Input**:
 
+- selectedCompany (string)
+- percentchange (float)
+- Internally, the input is a list of dates containing the dates on which the percent change was greater or lower based on the selected filter. This string is passed to a news API functions responsible for fetching content and title and displaying data.
 
-## Component 6 : Sentiment Analysis
-- pre-trained model 
-    - polarity
-- trying to do minimal/no pre-processing
-- keywords 
-    - dictionary of most frequent words (excluding stop-words)
+**Output**:
 
-## Component 7 : Design and Layout
-- component positioning
-- colours/theme
+- Display of news headlines and articles relevant to the selected company.
 
+**Assumptions**:
 
+- User selects a company from a predefined dropdown menu on the user interface and a percent change filter.
+- Users are familiar with the companies available in the dropdown menu.
+- The changes that the user can apply can apnly be 5% or 10%.
 
-## Component 2 : Interactivity
+**Interaction with Other Components**:
+Interacts with sentiment analysis component to retrieve sentiment value for displaying data.
 
-Filter for Company - 
-what it does - enables a user to see the graphs, technical indicators, news artciles pertaining to a specific company
-input - click on a company the user in interested in from a predefined dropdown on the user interface,
-internally, the input is a string from a pre-defined list
-output - the charts and news headlines generated are displayed for that company
-internally, the data is subsetted/filtered to display only for that specific company. This subsetted data is passed through the functions responsible 
-Assumptions?
+**Pseudocode**:
 
+```
+function getDatesforarticles(selectedCompany, percentchange):
+    dates_for_articles = find_count_value_change
 
-## Component 7 : Design and Layout
-- component positioning
-- colours/theme
+    for date in dates_for_articles:
+        api_response = get_news_articles()
+        filtered_articles # filter articles for the specific company only
+        news_articles_links[date] = filtered_articles
 
+    return news_articles_links
+```
 
+#### Sub-component - `buttonsOnGraph`
 
+**what it does**:  add buttons when there is a significant increase or decrease in the stock value, typically at thresholds such as 5% or 10%. These buttons represent the stock trends of a specified company within a specified date range. Upon clicking these buttons, users are redirected to a new tab displaying a headline or an article corresponding to the drastic change that occurred.
 
-## Software Components to Facilitate Interactivity
+**Input**:
 
-### Component 1 : Company Filter
-**Overview**
+- The input for this component is generated dynamically based on predefined events of significant stock price changes.
+- These events trigger the appearance of buttons on the plotly line graph.
+
+**Output**:
+
+- Redirection to news headlines or articles corresponding to the drastic change in the stock price of a specific company within a specific date range.
+
+**Assumptions**:
+
+- There exists a static dataset containing predefined events of significant stock price changes.
+- Buttons are displayed only for the relevant news headlines and articles corresponding to these events.
+- Users understand that the buttons are associated with significant stock price changes.
+- Users interact with these buttons by clicking on them.
+- The news articles or headlines are storedis accessible when redirected upon button click.
+
+**Pseudocode**:
+
+```
+def buttonsOnGraph(data):
+    significantEvents = findSignificantEvents(data)
+
+    # Function to display a button on the plotly line graph for a significant increase or decrease in stock price
+    # Button redirects to a news article or headline corresponding to the increase or decrease
+
+```
+### Component 3. Design and Layout 
+
+#### Overview
+The Design and Layout component creates interactive web applications and builds intuitive and visually appealing user interfaces using `streamlit` Python Package.
+
+#### Sub_component - Steamlit Tab
+
+**what it does**:
+
+The Streamlit Tab Component facilitates the organization of different information into separate tabs on the Streamlit frontend. In our application, we have planned to utilize two tabs: one for displaying Plotly line graphs depicting stock trends and technical indicators, and the other for presenting relevant news articles based on sentiment analysis. 
+
+**Usage**:
+
+- The tab functionality enables users to easily switch between different categories of information. 
+- Each tab can contain distinct sets of components and functionality tailored to its specific purpose.
+
+**Sample Code**:
+
+```
+tab1, tab2 = st.tabs(["Stock Visualizations and Technical Indicators", "News Headlines and Articles"])
+
+with tab1:
+    # Remaining code for Tab 1
+
+with tab2:
+    # Remaining code for Tab 2
+```
+
+#### Sub_component - Streamlit Expander
+
+**what it does**:
+
+The Streamlit Expander Component allows for the collapsible display of additional content within a section. In our application, we intend to use the expander to present news headlines initially, and upon user interaction, expand to reveal further details such as the full news article, publication date, and source.
+
+**Usage**:
+
+- Users can expand or collapse the content within the expander section using a toggle button.
+- The expander component helps to maintain a clean and organized layout by initially displaying only essential information, with the option to reveal additional details as needed.
+
+**Sample Code**:
+
+```
+with st.expander("News Headline"):
+    st.write("News Article")
+```
+
+### Component 4. Interactivity
+
+#### Overview
+
+The Interactivity implements interactivity to the graphs and web applications.
+
+#### Sub-component - Company Filter
+
+**what it does**:
+
 The Company Filter component facilitates user interaction to display graphs, technical indicators, and news articles specific to a chosen company.
 
-**Input**
+**Input**:
+
 - User selects a company from a predefined dropdown menu on the user interface.
 - Internally, the input is a string representing the selected company from a pre-defined list. This string is passed to various functions responsible for generating visualizations and displaying data.
 
-**Output**
-- Plotly line charts illustrating stock trends.
-- Plotly charts representing various technical indicators.
-- Display of news headlines and articles relevant to the selected company.
-- Internally, data is filtered to include information specific to the chosen company before being processed and displayed.
+**Output**:
 
-**Assumptions**
+- data filtered to include information specific to the chosen company.
+- Internally, recreate visualizations by interacting with the Visualization Manager.
+
+**Assumptions**:
+
 - The dropdown menu contains an accurate and pre-defined list of companies.
 - Users are familiar with the companies available in the dropdown menu.
 
-**Interaction with Other Components**
+**Interaction with Other Components**:
+
 Interacts with backend functions to retrieve filtered data for visualization and display:
 1. Plotly function for visualizing the line graph of stock trends.
 2. Plotly function for visualizing various technical indicators.
@@ -146,29 +239,32 @@ def filterCompany(selectedCompany):
     if isValidCompany(selectedCompany):
         filteredData = df[df["Company"] == selectedCompany]
         return filteredData
-
 ```
 
-### Component 2 : Date Filter
-**Overview**
+#### Sub-component - Date Filter
+
+**what it does**:
+
 The Date Filter component allows users to select a specific date range for viewing or analyzing the stock of a particular company.
 
-**Input**
+**Input**:
+
 - Users select a start date and end date from a calendar dropdown menu on the user interface.
 - Internally, the selected date range filters the dataset of a specific company's stock. These two date parameters are subsequently passed to various functions responsible for data visualization and display.
 
-**Output**
-- Plotly line charts illustrating stock trends.
-- Plotly charts representing various technical indicators.
-- Display of news headlines and articles relevant to the selected company within the specified date range.
-- Internally, data is filtered to include information specific to the date range for the chosen company before being processed and displayed.
+**Output**:
 
-**Assumptions**
+- data filtered to include information specific to the date range for the chosen company.
+- Internally, recreate visualizations by interacting with the Visualization Manager.
+
+**Assumptions**:
+
 - Users have initially selected the company stock they are interested in.
 - The calendar dropdown menu contains dates that fall within the available date ranges in the dataset. If an invalid date is selected, an error will be thrown, prompting the user to choose again.
 - The start date must precede the end date. If this condition is not met, an error will be thrown, and the user will be prompted to choose again.
 
-**Interaction with Other Components**
+**Interaction with Other Components**:
+
 Interacts with backend functions to retrieve filtered data for visualization and display:
 1. Plotly function for visualizing the line graph of stock trends.
 2. Plotly function for visualizing various technical indicators.
@@ -188,67 +284,5 @@ def isValidDate(startDate, endDate):
         return True
     else:
         return False
-
-```
-### Component 3 : Button on Plotly Line Graph
-**Overview**
-The Button on the Line Graph component represents the stock trends of a specified company within a specified date range. These buttons appear when there is a significant increase or decrease in the stock value, typically at thresholds such as 5% or 10%. Upon clicking these buttons, users are redirected to a new tab displaying a headline or an article corresponding to the drastic change that occurred.
-
-**Input**
-- Users interact with these buttons by clicking on them to view news headlines or articles related to the drastic stock price changes.
-- The input for this component is generated dynamically based on predefined events of significant stock price changes.
-- These events trigger the appearance of buttons on the plotly line graph.
-
-**Output**
-- Redirection to news headlines or articles corresponding to the drastic change in the stock price of a specific company within a specific date range.
-
-**Assumptions**
-- There exists a static dataset containing predefined events of significant stock price changes.
-- Buttons are displayed only for the relevant news headlines and articles corresponding to these events.
-- Users understand that the buttons are associated with significant stock price changes.
-- The news articles or headlines are storedis accessible when redirected upon button click.
-
-**Pseudocode**
-```
-def buttonsOnGraph(data):
-    significantEvents = findSignificantEvents(data)
-
-    # Function to display a button on the plotly line graph for a significant increase or decrease in stock price
-    # Button redirects to a news article or headline corresponding to the increase or decrease
-
 ```
 
-## Software Components for Design and Layout using `streamlit` Python Package
-
-### Component 1 : Steamlit Tab Component
-
-**Overview**
-The Streamlit Tab Component facilitates the organization of different information into separate tabs on the Streamlit frontend. In our application, we have planned to utilize two tabs: one for displaying Plotly line graphs depicting stock trends and technical indicators, and the other for presenting relevant news articles based on sentiment analysis. 
-
-**Usage**
-- The tab functionality enables users to easily switch between different categories of information. 
-- Each tab can contain distinct sets of components and functionality tailored to its specific purpose.
-
-**Sample Code**
-```
-tab1, tab2 = st.tabs(["Stock Visualizations and Technical Indicators", "News Headlines and Articles"])
-
-with tab1:
-    # Remaining code for Tab 1
-
-with tab2:
-    # Remaining code for Tab 2
-```
-
-### Component 2 : Streamlit Expander Component
-The Streamlit Expander Component allows for the collapsible display of additional content within a section. In our application, we intend to use the expander to present news headlines initially, and upon user interaction, expand to reveal further details such as the full news article, publication date, and source.
-
-**Usage**
-- Users can expand or collapse the content within the expander section using a toggle button.
-- The expander component helps to maintain a clean and organized layout by initially displaying only essential information, with the option to reveal additional details as needed.
-
-**Sample Code**
-```
-with st.expander("News Headline"):
-    st.write("News Article")
-```
