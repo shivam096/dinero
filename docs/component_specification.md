@@ -1,3 +1,67 @@
+# Component Specification
+
+## Software Components
+
+### 1. Data Manager
+
+#### Overview
+
+The Data Manager component is designed to build the static datasets by extracting stock data from Yahoo Finance and news data through EODHD API calls. Besides, it provides access to cleaned data formatted as required by other components of the project. 
+
+#### Sub-component - `get_stock_data`
+
+**what it does**: collect stock data specified by company name and time through yfinance API call.
+
+**Input**: 
+
+- company name (string): specific stock ticker symbol (e.g., AAPL for Apple Inc.)
+- period (string): stock data in what period, default value is 3 years
+
+**Output**
+
+- csv files containing 3 years, unless otherwise specified, of stock information for companies: Microsoft, Google, Apple
+- columns: Open, High, Low, Close, Adj Close, Volume
+
+#### Sub-component - `get_news_data`
+
+**what it does**: collect news data specified by company name and timeframe through EODHD news API.
+
+**Input**:
+
+- company name (string): specific stock ticker symbol
+- start date (string): start timeframe of news, default value is 2021-01-01
+- end date (string): end timeframe of news, default value is 2024-02-01
+
+**Output**
+
+- json files containing news data for specific companies starting from 3 years ago.
+- columns: title, date, content, url
+
+#### Sub-component - `get_dataset`
+
+**what it does**: access to the database (stored in google drive)
+
+**Input**:
+
+- company name (string): specific stock ticker symbol
+- data type (string): stock or news
+- start date (string): start timeframe
+- end date (string): end timeframe
+
+**Output**
+
+- subset of data as required (pandas dataframe)
+
+#### Interaction with Other Components
+
+Interact with backend functions to retrieve subset of data from static database.
+
+
+### 2. 
+
+
+
+
 ## Component 1 : Charts
 - access the data and create the chart
 - tooltips, labels, axes
@@ -18,9 +82,6 @@
 ## Component 4 : Displaying Event Data (Title and Content)
 - (unsure)
 
-## Component 5 : API for Data 
-- stock data
-- news data
 
 ## Component 6 : Sentiment Analysis
 - pre-trained model 
