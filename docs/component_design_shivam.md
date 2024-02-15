@@ -32,44 +32,33 @@ function getDatesforarticles(selectedCompany, percentchange):
     return news_articles_links
 ```
 
-### Component 2 : Date Filter
+### Component 2 : Sentiment Analysis 
 **Overview**
-The Date Filter component allows users to select a specific date range for viewing or analyzing the stock of a particular company.
+The Sentiment Analysis component calculates the sentiments attaced to a particular article title and/or content for a given list of titles associated to a company.
 
 **Input**
-- Users select a start date and end date from a calendar dropdown menu on the user interface.
-- Internally, the selected date range filters the dataset of a specific company's stock. These two date parameters are subsequently passed to various functions responsible for data visualization and display.
+- Does not involve user input but the inputs are part of in process data movement.
+- Internally, the selected date range filters the dataset of a specific company's stock and the corresponding price percent change to retrienve a date range and list of news article titles. This list of articles is subsequently passed to the sentiment analysis functions responsible for calculating the sentiment of the titles.
 
 **Output**
-- Plotly line charts illustrating stock trends.
-- Plotly charts representing various technical indicators.
-- Display of news headlines and articles relevant to the selected company within the specified date range.
-- Internally, data is filtered to include information specific to the date range for the chosen company before being processed and displayed.
+- A dictionary of articels and their corresponding sentiment scores which are then used for filtering and displaying data
 
 **Assumptions**
 - Users have initially selected the company stock they are interested in.
-- The calendar dropdown menu contains dates that fall within the available date ranges in the dataset. If an invalid date is selected, an error will be thrown, prompting the user to choose again.
-- The start date must precede the end date. If this condition is not met, an error will be thrown, and the user will be prompted to choose again.
+- Their are only 3 sentiments attached to a given string - negative, positive or neutral
 
 **Interaction with Other Components**
 Interacts with backend functions to retrieve filtered data for visualization and display:
-1. Plotly function for visualizing the line graph of stock trends.
-2. Plotly function for visualizing various technical indicators.
-3. Function for displaying news headlines and articles.
+1. Function for displaying news headlines and articles.
 
 **Pseudocode**
 ```
-def filterDate(startDate, endDate):
-    if isValidDate(startDate, endDate):
-        filteredData = getDataWithinDateRange(startDate, endDate)
-        return filteredData
+function get_sentiment_value(title_list) -> dict:
 
-def isValidDate(startDate, endDate):
-    # Check if date range is valid for the given dataset
-    # startDate < endDate
-    if startDate < endDate:
-        return True
-    else:
-        return False
+    analyzer = create_SentimentIntensityAnalyzer() 
+    for each sentence in title_list:
+        vs = analyze_polarity(analyzer, sentence) 
+        senti_dict[sentence] = vs 
+    return senti_dict
 
 ```
