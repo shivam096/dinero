@@ -362,9 +362,38 @@ def format_data(self, data, format_type):
 - Interactivity Filters: Works with filters (date, time, company) to refine the displayed data based on user selections.
 - Design and Layout: The output format (e.g., visualization types) is adapted based on the overall design and layout specifications to ensure consistency across the dashboard.
  
+### Component 5. Sentiment Analysis 
 
+#### Overview
 
+The Sentiment Analysis component calculates the sentiments attaced to a particular article title and/or content for a given list of titles associated to a company.
 
+**Input**:
 
+- Does not involve user input but the inputs are part of in process data movement.
+- Internally, the selected date range filters the dataset of a specific company's stock and the corresponding price percent change to retrienve a date range and list of news article titles. This list of articles is subsequently passed to the sentiment analysis functions responsible for calculating the sentiment of the titles.
 
+**Output**:
 
+- A dictionary of articels and their corresponding sentiment scores which are then used for filtering and displaying data
+
+**Assumptions**:
+
+- Users have initially selected the company stock they are interested in.
+- Their are only 3 sentiments attached to a given string - negative, positive or neutral
+
+**Interaction with Other Components**:
+
+Interacts with Data Manager to retrieve filtered data and Visualization Manager for display:.
+
+**Pseudocode**:
+```
+function get_sentiment_value(title_list) -> dict:
+
+    analyzer = create_SentimentIntensityAnalyzer() 
+    for each sentence in title_list:
+        vs = analyze_polarity(analyzer, sentence) 
+        senti_dict[sentence] = vs 
+    return senti_dict
+
+```
