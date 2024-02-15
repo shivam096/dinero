@@ -397,3 +397,29 @@ function get_sentiment_value(title_list) -> dict:
     return senti_dict
 
 ```
+
+## Interaction to accomplish use case
+
+### System Interaction Diagram
+![System_design](https://github.com/shivam096/dinero/blob/main/docs/System_design.jpg)
+
+### Interaction Diagram - Sentiment Analysis
+![Sentiment Analysis Diagram](https://github.com/shivam096/dinero/blob/main/docs/Sentiment%20Analysis%20Diagram.jpeg)
+
+### Use Case - Sentiment Analysis
+
+**Objective**: System displays sentiment analysis results based on users interest
+
+User: Select company name and time frame that they are interested in.
+
+System: Retrieve relevent stock and news data, apply sentiment analysis, and display the results.
+
+**Components Interacted**:
+
+1. Interactivity
+2. Data Manager
+3. Sentiment Analysis
+4. Design and Layout
+
+
+
