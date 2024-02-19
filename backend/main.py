@@ -7,7 +7,7 @@ from transform import get_filter_dates
 
 sentiment_date = {}
 
-dates_dictionary = get_filter_dates("/Users/stlp/Documents/data557/final_project/dinero/data/AAPL.csv",5, "AAPL")
+dates_dictionary = get_filter_dates("data/AAPL.csv",5, "AAPL")
 
 pprint(dates_dictionary)
 
