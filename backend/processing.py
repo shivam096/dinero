@@ -3,4 +3,4 @@ from req import get_news_articles
 from transform import get_filter_dates
 
 
-get_filter_dates("/Users/stlp/Documents/data557/final_project/dinero/data/AAPL.csv",5, "AAPL")
+get_filter_dates("data/AAPL.csv",5, "AAPL")
