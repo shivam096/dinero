@@ -5,8 +5,9 @@ from transform import get_filter_dates
 from kpi_manager import get_technical_indicator
 
 sentiment_date = {}
-
-dates_dictionary = get_filter_dates("data/AAPL.csv",5, "AAPL")
+stock_symbol = "AAPL"
+file_path = os.path.join("data", f'{stock_symbol}.csv')
+dates_dictionary = get_filter_dates(file_path,5, stock_ticker)
 
 
 pprint(dates_dictionary)
@@ -24,4 +25,4 @@ length = 50
 indicator = 'MA'
 
 indicator_data = get_technical_indicator(ticker_symbol, length, indicator)
-pprint(indicator_data)
+print(indicator_data)

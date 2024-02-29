@@ -1,16 +1,17 @@
 import pandas as pd
 import technical_indicators as ti
+import os
 
-#Reads Stock data
+
+# Reads Stock data
 def read_stock_data(stock_symbol):
     """Read stock data from CSV file."""
-    file_path = f'../data/{stock_symbol}.csv'  # Adjust path as needed
+    file_path = os.path.join("data", f'{stock_symbol}.csv')
     df = pd.read_csv(file_path)
-    df['Date'] = pd.to_datetime(df['Date'])
-    df.set_index('Date', inplace=True)
     return df
 
-#Fetches Technical Indicator
+
+# Fetches Technical Indicator
 def get_technical_indicator(ticker_symbol, length, indicator):
     df = read_stock_data(ticker_symbol)
 
