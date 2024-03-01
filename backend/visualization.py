@@ -2,23 +2,29 @@ import pandas as pd
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 import streamlit as st
+from kpi_manager import get_technical_indicator
+import os
+
 
 # Fetch stock data
 def get_stock_data(symbol):  # start_date, end_date
-    file_path = f'../data/{symbol}.csv'
+    file_path = os.path.join("data", f'{symbol}.csv')
     stock_data = pd.read_csv(file_path)
-    return stock_data
+    indicator = get_technical_indicator(symbol,50,'MA')
+    return stock_data, indicator
+
 
 # Plot interactive stock data
-def plot_stock_data(stock_data):
+def plot_stock_data(stock_data, indicator):
     fig = go.Figure()
 
     # Add trace for stock closing prices
     fig.add_trace(go.Scatter(x=stock_data['Date'], y=stock_data['Close'], mode='lines', name='Close'))
-    fig.add_trace(go.Scatter(x=stock_data['Date'], y=stock_data['Open'], mode='lines', name='Open'))
-    fig.add_trace(go.Scatter(x=stock_data['Date'], y=stock_data['High'], mode='lines', name='High'))
-    fig.add_trace(go.Scatter(x=stock_data['Date'], y=stock_data['Low'], mode='lines', name='Low'))
-    fig.add_trace(go.Scatter(x=stock_data['Date'], y=stock_data['Adj Close'], mode='lines', name='Adj Close'))
+    fig.add_trace(go.Scatter(x=indicator['Date'], y=indicator[indicator.columns[1]], mode='lines', name=indicator.columns[1]))
+    # fig.add_trace(go.Scatter(x=stock_data['Date'], y=stock_data['Open'], mode='lines', name='Open'))
+    # fig.add_trace(go.Scatter(x=stock_data['Date'], y=stock_data['High'], mode='lines', name='High'))
+    # fig.add_trace(go.Scatter(x=stock_data['Date'], y=stock_data['Low'], mode='lines', name='Low'))
+    # fig.add_trace(go.Scatter(x=stock_data['Date'], y=stock_data['Adj Close'], mode='lines', name='Adj Close'))
     # Add trace for stock volume
     # fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data['Volume'], mode='lines', name='Volume'))
 
@@ -41,9 +47,7 @@ def plot_stock_data(stock_data):
 
     return fig
 
-# stock_data = get_stock_data('AAPL')
-# fig = plot_stock_data(stock_data)
-# st.plotly_chart(fig)
 
-
-
+stock_data,t_i = get_stock_data('AAPL')
+fig = plot_stock_data(stock_data,t_i)
+st.plotly_chart(fig)
