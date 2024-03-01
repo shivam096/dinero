@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+# The "project" section contains metadata about the project, like
+# the authors and version. Note that the `dynamic` setting here
+# is very important so that the build system packages up your
+# dependencies!
+[project]
+name = "dinero"
+version = "0.0.1"
+authors = [
+  { name="Navya Eedula" },
+  { name="Shivam Agarwal" },
+  { name="Yasovar Tammareddy" },
+  { name="Xinyi Lyu" },
+]
+description = "An application for financial data analysis"
+readme = "README.md"
+requires-python = ">=3"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dynamic = ["dependencies"]
+
+# In conjunction with the "dynamic" option above in the "project"
+# section, this tells the build system to add any dependencies
+# specified in requirements.txt.
+[tool.setuptools.dynamic]
+dependencies = {file = ["req.txt"]}
+
+# Where can someone find out more about your project?
+[project.urls]
+Homepage = "https://github.com/shivam096/dinero"
+Issues = "https://github.com/shivam096/dinero/issues"
