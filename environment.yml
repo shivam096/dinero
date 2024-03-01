@@ -1,0 +1,7 @@
+name: dinero_env
+channels:
+  - defaults
+dependencies:
+  - pip
+  - pip:
+    - -r req.txt
