@@ -2,10 +2,6 @@
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
-# The "project" section contains metadata about the project, like
-# the authors and version. Note that the `dynamic` setting here
-# is very important so that the build system packages up your
-# dependencies!
 [project]
 name = "dinero"
 version = "0.0.1"
@@ -25,13 +21,9 @@ classifiers = [
 ]
 dynamic = ["dependencies"]
 
-# In conjunction with the "dynamic" option above in the "project"
-# section, this tells the build system to add any dependencies
-# specified in requirements.txt.
 [tool.setuptools.dynamic]
 dependencies = {file = ["req.txt"]}
 
-# Where can someone find out more about your project?
 [project.urls]
 Homepage = "https://github.com/shivam096/dinero"
 Issues = "https://github.com/shivam096/dinero/issues"
