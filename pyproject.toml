@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dinero"
+version = "0.0.1"
+authors = [
+  { name="Navya Eedula" },
+  { name="Shivam Agarwal" },
+  { name="Yasovar Tammareddy" },
+  { name="Xinyi Lyu" },
+]
+description = "An application for financial data analysis"
+readme = "README.md"
+requires-python = ">=3"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["req.txt"]}
+
+[project.urls]
+Homepage = "https://github.com/shivam096/dinero"
+Issues = "https://github.com/shivam096/dinero/issues"
