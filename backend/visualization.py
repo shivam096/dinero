@@ -9,6 +9,7 @@ def get_stock_data(symbol):  # start_date, end_date
     stock_data = pd.read_csv(file_path)
     return stock_data
 
+
 # Plot interactive stock data
 def plot_stock_data(stock_data):
     fig = go.Figure()
@@ -23,6 +24,7 @@ def plot_stock_data(stock_data):
     # fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data['Volume'], mode='lines', name='Volume'))
 
     time_buttons = [
+        {'step': 'all', 'label': 'All'},
         {'count': 1, 'step': 'month', 'stepmode': 'backward', 'label': '1 Month'},
         {'count': 6, 'step': 'month', 'stepmode': 'backward', 'label': '6 Month'},
         {'count': 1, 'step': 'year', 'stepmode': 'todate', 'label': '1 Year To Date'},
@@ -39,11 +41,27 @@ def plot_stock_data(stock_data):
     # Add tooltip
     fig.update_traces(hovertemplate="Date: %{x}<br>Close Price: %{y}")
 
+    # fig['layout']['yaxis'].update(autorange = True)
+    fig.update_layout
+    layout = dict(
+        rangeslider=dict(
+            visible = True
+        ),
+        type='date'
+    )
+)
+
+    def zoom(layout, xrange):
+        in_view = df.loc[fig.layout.xaxis.range[0]:fig.layout.xaxis.range[1]]
+        fig.layout.yaxis.range = [in_view.High.min() - 10, in_view.High.max() + 10]
+
+    fig.layout.on_change(zoom, 'xaxis.range')
+
     return fig
 
-# stock_data = get_stock_data('AAPL')
-# fig = plot_stock_data(stock_data)
-# st.plotly_chart(fig)
+stock_data = get_stock_data('AAPL')
+fig = plot_stock_data(stock_data)
+st.plotly_chart(fig)
 
 
 
