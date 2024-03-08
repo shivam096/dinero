@@ -29,6 +29,6 @@ def get_filter_dates(file_path: str, percent_change: int, stock_ticker : str):
     for date in dates_for_articles:
         api_response = get_news_articles(stock_ticker,date=date)
 
-        news_articles_links[date] = [i['title'] for i in api_response if any(stock_ticker in symbol for symbol in i['symbols'])]
+        news_articles_links[date] = [i['content'] for i in api_response if any(stock_ticker in symbol for symbol in i['symbols'])]
 
     return news_articles_links

@@ -1,6 +1,7 @@
 import pandas as pd
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-
+import nltk
+nltk.download('vader_lexicon')
 
 def get_sentiment_value(title_list: list) -> dict:
     senti_dict = {}
@@ -8,5 +9,5 @@ def get_sentiment_value(title_list: list) -> dict:
     for sentence in title_list:
         vs = analyzer.polarity_scores(sentence)
         senti_dict[sentence] = vs
-    
+
     return senti_dict

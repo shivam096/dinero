@@ -7,7 +7,9 @@ from dinero.backend.kpi_manager import get_technical_indicator
 sentiment_date = {}
 stock_symbol = "AAPL"
 file_path = f"dinero/data/{stock_symbol}.csv"
-dates_dictionary = get_filter_dates(file_path,5, stock_symbol)
+percent_change = 5
+
+dates_dictionary = get_filter_dates(file_path, percent_change, stock_symbol)
 
 
 pprint(dates_dictionary)
