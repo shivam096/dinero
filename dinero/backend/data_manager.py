@@ -16,14 +16,14 @@ period_str: '1y' = one year, '1m' = one month, '1d' = one day
 """
 def download_stock_data(ticker_symbol, period_str):
     # Create data folder if it doesn't exist
-    if not os.path.exists('dinero/data'):
-        os.makedirs('dinero/data')
+    if not os.path.exists('data'):
+        os.makedirs('data')
 
     # Download data from Yahoo Finance
     data = yf.download(ticker_symbol, period=period_str)
 
     # Save data to CSV file
-    file_path = f'dinero/data/{ticker_symbol}.csv'
+    file_path = f'data/{ticker_symbol}.csv'
     data.to_csv(file_path)
 
 """
@@ -33,10 +33,7 @@ ticker_symbol: exsiting ticker
 (one of 'AAPL', 'GOOG', 'MSFT', 'NVDA', 'TSLA' in  this case)
 """
 def update_stock_data(ticker_symbol):  
-     # Check if data folder exists, if not, create it
-    if not os.path.exists('data'):
-        os.makedirs('data')
-    file_path = f'dinero/data/{ticker_symbol}.csv'
+    file_path = f'data/{ticker_symbol}.csv'
 
     # Check if CSV file exists
     if not os.path.exists(file_path):
@@ -57,3 +54,11 @@ def update_stock_data(ticker_symbol):
         new_data.to_csv(file_path, mode='a', header=False)
 
 
+# Fetch stock data
+def get_stock_data(symbol):  # start_date, end_date
+    file_path = f"data/{symbol}.csv"
+    # Check if CSV file exists
+    if not os.path.exists(file_path):
+        raise ValueError('No such ticker. Please download initial data first.')
+    stock_data = pd.read_csv(file_path)
+    return stock_data

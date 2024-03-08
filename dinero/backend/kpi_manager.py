@@ -1,12 +1,12 @@
 import pandas as pd
-import dinero.backend.technical_indicators as ti
+import backend.technical_indicators as ti
 import os
 
 
 # Reads Stock data
 def read_stock_data(stock_symbol):
     """Read stock data from CSV file."""
-    file_path = f"dinero/data/{stock_symbol}.csv"
+    file_path = f"data/{stock_symbol}.csv"
     df = pd.read_csv(file_path)
     return df
 
