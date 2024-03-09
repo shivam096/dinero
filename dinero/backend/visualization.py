@@ -18,8 +18,7 @@ def plot_stock_price(ticker_symbol):
                                             name='Candlestick'))
 
     # Update layout for candlestick chart
-    fig_candlestick.update_layout(title="Candlestick Chart",
-                                xaxis_title="Date", yaxis_title="Price")
+    fig_candlestick.update_layout(xaxis_title="Date", yaxis_title="Price")
 
     time_buttons = [
         {'step': 'all', 'label': 'All'},
@@ -51,7 +50,7 @@ def plot_kpis(stock_fig, ticker_symbol, length, kpi_name):
         fig.add_trace(go.Scatter(x=indicator['Date'], y=stock_data['Close'], mode='lines', name='Stock Close Price'), row=1, col=1)
         fig.update_xaxes(showticklabels=False, row=1, col=1)
 
-        # Add the second subplot with indicator line graph
+    # Add the second subplot with indicator line graph
         fig.add_trace(go.Scatter(x=indicator['Date'], y=indicator[indicator.columns[1]], mode='lines', name=kpi_name), row=2, col=1)
 
         fig.update_layout(hovermode='x unified')
