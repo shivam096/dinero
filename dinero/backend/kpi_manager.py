@@ -6,7 +6,7 @@ by utilizing the technical_indicators module.
 """
 import os
 import pandas as pd
-import backend.technical_indicators as ti
+import dinero.backend.technical_indicators as ti
 
 
 # Reads Stock data
