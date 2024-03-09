@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import datetime
 import plotly.graph_objects as go
-import time
 
 from dinero.backend.app_functions import retrieve_data, streamlit_filtering_by_date
 
