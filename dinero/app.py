@@ -5,9 +5,8 @@ import datetime
 import plotly.graph_objects as go
 import time
 
-from backend.visualization import plot_stock_data, plot_stock_price
+from backend.visualization import plot_stock_price
 from backend.visualization import plot_kpis
-from backend.kpi_manager import get_technical_indicator
 
 st.set_page_config(layout="wide")
 st.header("DINERO - Analyze Stocks and Market Sentiment")

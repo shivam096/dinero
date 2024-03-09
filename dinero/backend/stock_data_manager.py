@@ -106,6 +106,8 @@ def get_stock_data(ticker_symbol):
     """
     ticker_symbol = ticker_symbol.upper()
     file_path = os.path.join(DEFAULT_DATABASE_PATH, f'{ticker_symbol}.csv')
+    if not os.path.exists(file_path):
+        raise ValueError("No such database. Please download initial data first.")
     return pd.read_csv(file_path)
 
 

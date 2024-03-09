@@ -69,12 +69,25 @@ class TestStockDataManager(unittest.TestCase):
         tikers = update_stock_data()
         self.assertIsInstance(tikers, list)
 
-    def test_get_stock_data(self):
+    
+    @mock.patch("backend.stock_data_manager.pd.read_csv")
+    def test_get_stock_data(self, mock_read_csv):
         """
         Test fetch stock data from database
+        (using mock to simulate a successful file read)
         """
+        mock_read_csv.return_value = pd.DataFrame({"Close": [100, 200, 300]})
         data = get_stock_data('MSFT')
+        mock_read_csv.assert_called_once_with("data\\MSFT.csv")
         self.assertIsInstance(data, pd.DataFrame)
+        self.assertEqual(len(data), 3)
+
+    def test_get_stock_data_invalid_ticker(self):
+        """
+        Test fetch non-existing stock data from database
+        """
+        with self.assertRaises(ValueError):
+            get_stock_data('NON_EXISTENT_SYMBOL')
 
     def test_default_get_filtered_stock_data(self):
         """
