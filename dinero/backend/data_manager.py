@@ -56,7 +56,7 @@ def update_stock_data(ticker_symbol):
 
 # Fetch stock data
 def get_stock_data(symbol):  # start_date, end_date
-    file_path = f"data/{symbol}.csv"
+    file_path = f"dinero/data/{symbol}.csv"
     # Check if CSV file exists
     if not os.path.exists(file_path):
         raise ValueError('No such ticker. Please download initial data first.')

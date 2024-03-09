@@ -37,11 +37,6 @@ data = {
 df = pd.DataFrame(data)
 df['Date'] = pd.to_datetime(df['Date'])
 
-# Function to filter headlines based on selected date range
-# def filter_headlines(date_range):
-#     filtered_df = df[(df['Date'] >= pd.Timestamp.now().normalize() - pd.Timedelta(days=date_range)) &
-#                      (df['Date'] <= pd.Timestamp.now().normalize())]
-#     return filtered_df
 
 company_stock_mapping = {
     "AAPL" : "APPLE",
@@ -86,16 +81,15 @@ with tab1:
     col1, col2 = st.columns(2)
     with col1:
         kpi_name = st.selectbox('Select Technical Indicator', ('MA', 'RSI', 'ROC', 'BBP'))
+        with st.expander(f"🛈 More about {kpi_name}"):
+            st.markdown(kpi_description_mapping[kpi_name], unsafe_allow_html=True)
 
     with col2:
         length = st.number_input('Input a length')
 
-    with st.expander(f"🛈 What is length?"):
-        st.markdown("<span style='color:#D24545'><b>Length</b></span> typically refers to the <span style='color:#AEDEFC'><b>number of days</b></span> over which the KPI is calculated.".format(positive_color), unsafe_allow_html=True)
-        st.markdown("A<span style='color:#AEDEFC'><i> longer length may provide a smoother output</i></span> but could lag behind recent market trends, while a <span style='color:#AEDEFC'><i>shorter length may respond more quickly to changes</i></span> but may also produce more noise or false signals.",unsafe_allow_html=True)
+        with st.expander(f"🛈 What is length?"):
+                st.markdown("<span style='color:#D24545'><b>Length</b></span> typically refers to the <span style='color:#AEDEFC'><b>number of days</b></span> over which the KPI is calculated.".format(positive_color), unsafe_allow_html=True)
 
-    with st.expander(f"🛈 More about {kpi_name}"):
-        st.markdown(kpi_description_mapping[kpi_name], unsafe_allow_html=True)
 
     fig_kpi = plot_kpis(fig_price, company_option, length, kpi_name)
     #st.plotly_chart(fig_kpi, use_container_width=True)
@@ -130,13 +124,6 @@ with tab2:
 
     # Date range selection
     date_range = st.selectbox('Select date range:', ['Past 30 days', 'Past 120 days', 'Past 7 days'])
-
-    # if date_range == 'Past 30 days':
-    #     filtered_df = filter_headlines(30)
-    # elif date_range == 'Past 120 days':
-    #     filtered_df = filter_headlines(120)
-    # elif date_range == 'Past 7 days':
-    #     filtered_df = filter_headlines(7)
 
     if df.empty:
         st.write("No headlines found")

@@ -49,8 +49,6 @@ def plot_kpis(stock_fig, ticker_symbol, length, kpi_name):
 
         fig.add_trace(go.Scatter(x=indicator['Date'], y=stock_data['Close'], mode='lines', name='Stock Close Price'), row=1, col=1)
         fig.update_xaxes(showticklabels=False, row=1, col=1)
-
-    # Add the second subplot with indicator line graph
         fig.add_trace(go.Scatter(x=indicator['Date'], y=indicator[indicator.columns[1]], mode='lines', name=kpi_name), row=2, col=1)
 
         fig.update_layout(hovermode='x unified')
