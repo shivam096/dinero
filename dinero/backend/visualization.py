@@ -72,7 +72,10 @@ def plot_kpis(stock_fig, ticker_symbol, length, kpi_name):
     Returns:
     None if plot of 'MA' indicator, plotly.graph_objects.Figure otherwise.
 
-    The Plotly figure object (if returned) plots the indicator with features:
+    The Plotly figure object (if returned) contains two subplots：
+        - the stock prie
+        - the technical indicator
+    with features:
         customized color and titles
         tooltip with technical indicator value
         allow view adjustment through xrange slider
@@ -100,8 +103,10 @@ def plot_kpis(stock_fig, ticker_symbol, length, kpi_name):
     kpi_fig = make_subplots(rows=2, cols=1)
 
     stock_data = get_stock_data(ticker_symbol)
-    kpi_fig.add_trace(go.Scatter(x=indicator['Date'], y=stock_data['Close'], mode='lines', name='Stock Close Price'), row=1, col=1)
-    kpi_fig.add_trace(go.Scatter(x=indicator['Date'], y=indicator[indicator.columns[1]], mode='lines', name=kpi_name), row=2, col=1)
+    kpi_fig.add_trace(go.Scatter(x=indicator['Date'], y=stock_data['Close'],
+                                 mode='lines', name='Stock Close Price'), row=1, col=1)
+    kpi_fig.add_trace(go.Scatter(x=indicator['Date'], y=indicator[indicator.columns[1]],
+                                 mode='lines', name=kpi_name), row=2, col=1)
 
     # Update layout for the KPI line chart
     kpi_fig.update_layout(hovermode="x unified")

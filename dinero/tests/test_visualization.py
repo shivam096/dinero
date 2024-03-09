@@ -87,8 +87,11 @@ class TestVisualization(unittest.TestCase):
         self.assertIsInstance(kpi_fig, go.Figure)
         self.assertEqual(kpi_fig.layout.title['text'],
                          'ROC for MSFT')
-        self.assertEqual(len(kpi_fig.data), 1)
+        self.assertEqual(len(kpi_fig.data), 2)
         self.assertEqual(kpi_fig.data[0].type, 'scatter')
+        self.assertEqual(kpi_fig.data[0].name, 'Stock Close Price')
+        self.assertEqual(kpi_fig.data[1].type, 'scatter')
+        self.assertEqual(kpi_fig.data[1].name, 'ROC')
 
 if __name__ == '__main__':
     unittest.main()
