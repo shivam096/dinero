@@ -8,6 +8,7 @@ Functions:
     2. plot_kpis(stock_fig, ticker_symbol, length, kpi_name)
 """
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 from backend.stock_data_manager import get_stock_data
 from backend.kpi_manager import get_technical_indicator
@@ -85,7 +86,6 @@ def plot_kpis(stock_fig, ticker_symbol, length, kpi_name):
     """
     indicator = get_technical_indicator(ticker_symbol,int(length),kpi_name)
 
-    kpi_fig = go.Figure()
     if kpi_name == 'MA':
         stock_fig.add_trace(go.Scatter(x=indicator['Date'], y=indicator[indicator.columns[1]],
                                        mode='lines', name=indicator.columns[1]))
@@ -97,13 +97,18 @@ def plot_kpis(stock_fig, ticker_symbol, length, kpi_name):
         candles.decreasing.line.color = '#FF4136'
         return None
 
-    kpi_fig.add_trace(go.Scatter(x=indicator['Date'], y=indicator[indicator.columns[1]],
-                                 mode='lines', name=indicator.columns[1]))
+    kpi_fig = make_subplots(rows=2, cols=1)
+
+    stock_data = get_stock_data(ticker_symbol)
+    kpi_fig.add_trace(go.Scatter(x=indicator['Date'], y=stock_data['Close'], mode='lines', name='Stock Close Price'), row=1, col=1)
+    kpi_fig.add_trace(go.Scatter(x=indicator['Date'], y=indicator[indicator.columns[1]], mode='lines', name=kpi_name), row=2, col=1)
 
     # Update layout for the KPI line chart
+    kpi_fig.update_layout(hovermode="x unified")
+    kpi_fig.update_traces(xaxis='x1')
     kpi_fig.update_layout(title=f'{kpi_name} for {ticker_symbol}',
                           xaxis_title="Date", yaxis_title="Price")
-    kpi_fig.update_layout(hovermode="x unified")
+
     time_buttons = [
         {'step': 'all', 'label': 'All'},
         {'count': 3, 'step': 'year', 'stepmode': 'backward', 'label': '3 Year'},
@@ -115,4 +120,3 @@ def plot_kpis(stock_fig, ticker_symbol, length, kpi_name):
     kpi_fig.update_xaxes(rangeselector={'buttons': time_buttons})
     kpi_fig.update_yaxes(autorange=True, fixedrange = False)
     return kpi_fig
-    
