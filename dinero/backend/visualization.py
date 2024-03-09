@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 from backend.data_manager import get_stock_data
 from backend.kpi_manager import get_technical_indicator
@@ -37,16 +38,26 @@ def plot_stock_price(ticker_symbol):
 
 def plot_kpis(stock_fig, ticker_symbol, length, kpi_name):
 
-    indicator = get_technical_indicator(ticker_symbol,int(length),kpi_name)
-
-    fig = go.Figure()
+    indicator = get_technical_indicator(ticker_symbol, int(length), kpi_name)
 
     if kpi_name == 'MA':
         stock_fig.add_trace(go.Scatter(x=indicator['Date'], y=indicator[indicator.columns[1]], mode='lines', name=indicator.columns[1]))
-        return
+        return stock_fig
     else:
-        fig.add_trace(go.Scatter(x=indicator['Date'], y=indicator[indicator.columns[1]], mode='lines', name=indicator.columns[1]))
-    return fig
+        stock_data = get_stock_data(ticker_symbol)
+        #fig = go.Figure()
+        fig = make_subplots(rows=2, cols=1)
+
+        fig.add_trace(go.Scatter(x=indicator['Date'], y=stock_data['Close'], mode='lines', name='Stock Close Price'), row=1, col=1)
+        fig.update_xaxes(showticklabels=False, row=1, col=1)
+
+        # Add the second subplot with indicator line graph
+        fig.add_trace(go.Scatter(x=indicator['Date'], y=indicator[indicator.columns[1]], mode='lines', name=kpi_name), row=2, col=1)
+
+        fig.update_layout(hovermode='x unified')
+        fig.update_traces(hoverinfo='x+y')
+
+        return fig
 
 
 
@@ -82,8 +93,6 @@ def plot_stock_data(ticker_symbol): # indicator
     fig.update_traces(hovertemplate="Date: %{x}<br>Close Price: %{y}")
 
     return fig
-
-
 
 # Callback to update y-axis range when x-axis range is changed
 def update_y_axis_range(fig, trace, points):

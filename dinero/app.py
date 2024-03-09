@@ -38,6 +38,7 @@ with tab1:
     st.markdown("<h2 style='color:{}; text-align: center;'>{} STOCK PERFORMANCE VISUALIZATION</h2>".format(heading_color, company_stock_mapping[company_option]), unsafe_allow_html=True)
     # create vis
     fig_price = plot_stock_price(company_option)
+
     # Store the initial view as session state
     if 'initial_view' not in st.session_state:
         st.session_state.initial_view = fig_price.to_dict()
@@ -48,6 +49,10 @@ with tab1:
     if st.button('Return to Initial View'):
         fig_price.update(st.session_state.initial_view)
 
+    # Initialize empty DataFrame (optional)
+    if 'stock_data' not in st.session_state:
+        st.session_state['stock_data'] = pd.DataFrame()
+
     # Filter inputs
     st.markdown("<h2 style='color:{}; text-align: center;'>LEVERAGING TECHNICAL INDICATORS</h2>".format(heading_color), unsafe_allow_html=True)
     kpi_name = st.selectbox('Select Technical Indicator', ('MA', 'RSI', 'ROC', 'BBP'))
@@ -56,11 +61,12 @@ with tab1:
     length = st.number_input('Input a length')
 
     fig_kpi = plot_kpis(fig_price, company_option, length, kpi_name)
+    #st.plotly_chart(fig_kpi, use_container_width=True)
 
     if fig_kpi:
-        st.plotly_chart(fig_kpi)
+        st.plotly_chart(fig_kpi, use_container_width=True)
     else:
-        st.plotly_chart(fig_price)
+        st.plotly_chart(fig_price, use_container_width=True)
 
 
 with tab2:
