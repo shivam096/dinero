@@ -1,102 +1,138 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import datetime
 import plotly.graph_objects as go
-import time
 
 from backend.visualization import plot_stock_price
 from backend.visualization import plot_kpis
+from backend.kpi_manager import get_technical_indicator
 
 st.set_page_config(layout="wide")
-st.header("DINERO - Analyze Stocks and Market Sentiment")
-#st.image("frontend/favicon.png", width=100)
+
+heading_color = "#86B6F6"
+title_color = "#DBE7C9"
+positive_color = "#527853"  # Green
+neutral_color = "#B4B4B8"    # Yellow
+negative_color = "#D24545"   # Red
+
+data = {
+    'Date': ['2023-01-05', '2023-01-07', '2023-01-07', '2023-01-10', '2023-01-12',
+             '2023-01-15', '2023-01-18', '2023-01-20', '2023-01-20', '2023-01-25'],
+    'Headline': ['Breaking news: Stock market hits new high!',
+                 'Tech company announces record profits',
+                 'Market reacts to geopolitical events',
+                 'Analysts bullish on energy sector',
+                 'Economic outlook remains uncertain',
+                 'Federal Reserve announces interest rate hike',
+                 'Trade talks with China stall',
+                 'Investors cautious amid global tensions',
+                 'New product launch receives positive reviews',
+                 'Company CEO resigns, stock price drops'],
+    'Positive Sentiment Score': [0.8, 0.9, 0.7, 0.85, 0.75, 0.8, 0.65, 0.7, 0.9, 0.6],
+    'Neutral Sentiment Score': [0.4, 0.5, 0.6, 0.4, 0.6, 0.3, 0.7, 0.5, 0.4, 0.6],
+    'Negative Sentiment Score': [0.1, 0.2, 0.3, 0.15, 0.25, 0.2, 0.35, 0.4, 0.1, 0.5]
+}
+
+df = pd.DataFrame(data)
+df['Date'] = pd.to_datetime(df['Date'])
+
+
+company_stock_mapping = {
+    "AAPL" : "APPLE",
+    "GOOG" : "GOOGLE",
+    "MSFT" : "MICROSOFT",
+    "NVDA" : "NVIDIA",
+    "TSLA" : "TESLA"
+}
+
+kpi_description_mapping = {
+    "MA" : "The <span style='color:#D24545'><b>Moving Average (MA)</b></span> helps <span style='color:#AEDEFC'><i>smooth out short-term price fluctuations</i></span> to reveal the underlying trend. Imagine calculating the average price of a stock over a set period (like 20 days or 50 days). This helps <span style='color:#AEDEFC'><i>visualize the general direction (upward, downward, or sideways)</i></span> and spot trends to figure out when the stock might change direction.",
+    "RSI": "<span style='color:#D24545'><b>Relative Strength Index (RSI)</b></span> is like a speedometer for stocks! It tells us <span style='color:#AEDEFC'><i>how fast the price of a stock is changing.</i></span> When RSI is <span style='color:#AEDEFC'><i>high</i></span>, it means the stock might be <span style='color:#AEDEFC'><i>going up too fast and could slow down.</i></span> When RSI is <span style='color:#AEDEFC'><i>low</i></span>, it means the stock might be <span style='color:#AEDEFC'><i>going down too fast and could bounce back up.</i></span>",
+    "ROC": "<span style='color:#D24545'><b>Rate of Change (ROC)</b></span> tells you <span style='color:#AEDEFC'><i>how much the price has changed over a certain period of time,</i></span> expressed as a percentage. <span style='color:#AEDEFC'><i>Positive ROC</i></span> means the <span style='color:#AEDEFC'><i>price is going up,</i></span> <span style='color:#AEDEFC'><i>negative ROC</i></span> means it's <span style='color:#AEDEFC'><i>going down.</i></span> It helps you understand <span style='color:#AEDEFC'><i>how quickly the price is moving in one direction or another.</i></span>",
+    "BBP": "<span style='color:#D24545'><b>Bollinger Bands Percentage (BBP)</b></span> is like a rubber band around a stock's price! These bands are a <span style='color:#AEDEFC'><i>volatility indicator</i></span>, with a <span style='color:#AEDEFC'><i>wider band signifying higher volatility</i></span> and a <span style='color:#AEDEFC'><i>narrower band indicating lower volatility.</i></span> BBP values close to 0 suggest the price is near the lower band, potentially <span style='color:#AEDEFC'><i>hinting at oversold conditions</i></span>. Conversely, values close to 100 indicate the price is near the upper band, potentially <span style='color:#AEDEFC'><i>suggesting overbought conditions.</i></span>"
+}
+
+st.image("frontend/logo.png", use_column_width=True)
 
 st.sidebar.header("Filters for Data")
-company_option = st.sidebar.selectbox('Select one symbol', ('AAPL', 'GOOG', 'MSFT'))
+company_option = st.sidebar.selectbox('Select one symbol', ('AAPL', 'GOOG', 'MSFT', 'NVDA', 'TSLA'))
 
-def retrieve_data(company_option):
-    file_path = f'data/{company_option}.csv' 
-    df = pd.read_csv(file_path)
-    df['Date'] = pd.to_datetime(df['Date'])
-    df.reset_index(inplace=True)
-    return df
-
-def streamlit_filtering_by_date(df):
-    
-    default_start_date = df['Date'].iloc[0]
-    default_end_date = df['Date'].iloc[-1]
- 
-    start_date = st.sidebar.date_input('Start date', default_start_date )
-    end_date = st.sidebar.date_input('End date', default_end_date )
-    # Convert Python date objects to Pandas datetime objects
-    start_date = pd.to_datetime(start_date)
-    end_date = pd.to_datetime(end_date)
-
-    if start_date < end_date:
-        st.sidebar.success(f'Start date: `{start_date}`\n\nEnd date:`{end_date}`')
-    else:
-        st.sidebar.error('Error: End date must fall after start date.')
-
-    df = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
-    df.reset_index(inplace=True)
-    return df
-
-
-df = retrieve_data(company_option)
-df = streamlit_filtering_by_date(df)
-progress_bar = st.progress(0)
-
-percentage_change_option = st.sidebar.selectbox('Select Percentage Change in Stock Price', ('10%', '5%', '-5%', '10%'))
+percentage_change_option = st.sidebar.selectbox('Select Percentage Change in Stock Price', ('10%', '5%', '-5%', '-10%'))
 
 tab1, tab2 = st.tabs(["Stock Visualizations and Technical Indicators", "News Headlines and Articles"])
 
 with tab1:
-    st.header("Stock Visualizations and Technical Indicators")
-
+    st.markdown("<h2 style='color:{}; text-align: center;'>{} STOCK PERFORMANCE VISUALIZATION</h2>".format(heading_color, company_stock_mapping[company_option]), unsafe_allow_html=True)
     # create vis
     fig_price = plot_stock_price(company_option)
+
     # Store the initial view as session state
     if 'initial_view' not in st.session_state:
         st.session_state.initial_view = fig_price.to_dict()
- 
+
     st.plotly_chart(fig_price, use_container_width=True)
 
     # "Return to Initial View" button
     if st.button('Return to Initial View'):
         fig_price.update(st.session_state.initial_view)
 
-    # Filter inputs
-    kpi_name = st.selectbox('Select Technical Indicator', ('MA', 'RSI', 'ROC', 'BBP'))
-    length = st.number_input('Input a length')
+    st.markdown("<h2 style='color:{}; text-align: center;'>LEVERAGING TECHNICAL INDICATORS</h2>".format(heading_color), unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
+    with col1:
+        kpi_name = st.selectbox('Select Technical Indicator', ('MA', 'RSI', 'ROC', 'BBP'))
+        with st.expander(f"🛈 More about {kpi_name}"):
+            st.markdown(kpi_description_mapping[kpi_name], unsafe_allow_html=True)
+
+    with col2:
+        length = st.number_input('Input a length')
+
+        with st.expander(f"🛈 What is length?"):
+                st.markdown("<span style='color:#D24545'><b>Length</b></span> typically refers to the <span style='color:#AEDEFC'><b>number of days</b></span> over which the KPI is calculated.".format(positive_color), unsafe_allow_html=True)
+
 
     fig_kpi = plot_kpis(fig_price, company_option, length, kpi_name)
-    
+    #st.plotly_chart(fig_kpi, use_container_width=True)
+
     if fig_kpi:
-        st.plotly_chart(fig_kpi)
+        st.plotly_chart(fig_kpi, use_container_width=True)
     else:
-        st.plotly_chart(fig_price)
+        st.plotly_chart(fig_price, use_container_width=True)
+
 
 with tab2:
-    st.header("News Headlines and Articles")
-    with st.expander("Headline"):
+    st.markdown("<h2 style='color:{}; text-align: center;'>BEYOND HEADLINES : DECODING NEWS SENTIMENT</h2>".format(heading_color), unsafe_allow_html=True)
+    with st.expander(f"**Headline**"):
         st.write("This is the News Article (if relevant)")
-        
-    # Define the colors for the "value" fields
-    positive_color = "#00cc00"  # Green
-    neutral_color = "#ffcc00"    # Yellow
-    negative_color = "#ff3300"   # Red
 
     # Display the metrics in a single row
-    col1, col2, col3 = st.columns(3)
 
+    col1, col2, col3 = st.columns(3)
     with col1:
-        st.metric(label="Positive Sentiment Score", value="0.70")
+        st.markdown("<h1 style='color:{}; text-align: center;'>0.70</h1>".format(positive_color), unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center;'>Positive Sentiment Score 😄</p>", unsafe_allow_html=True)
 
     # Metric 2: Neutral Sentiment Score
     with col2:
-        st.metric(label="Neutral Sentiment Score", value="0.50")
+        st.markdown("<h1 style='color:{}; text-align: center;'>0.50</h1>".format(neutral_color), unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center;'>Neutral Sentiment Score 😐</p>", unsafe_allow_html=True)
 
     # Metric 3: Negative Sentiment Score
     with col3:
-        st.metric(label="Negative Sentiment Score", value="0.20")
+        st.markdown("<h1 style='color:{}; text-align: center;'>0.23</h1>".format(negative_color), unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center;'>Negative Sentiment Score ☹️</p>", unsafe_allow_html=True)
+
+    # Date range selection
+    date_range = st.selectbox('Select date range:', ['Past 30 days', 'Past 120 days', 'Past 7 days'])
+
+    if df.empty:
+        st.write("No headlines found")
+    else:
+        for index, row in df.iterrows():
+            with st.expander(f"{row['Date'].strftime('%Y-%m-%d')}: {row['Headline']}"):
+                df_col1, df_col2, df_col3 = st.columns(3)
+                with df_col1:
+                    st.markdown(f"<span style='color:{positive_color}'>Positive Sentiment Score:</span> <code style='color:{positive_color}'>{row['Positive Sentiment Score']}</code>", unsafe_allow_html=True)
+                with df_col2:
+                    st.markdown(f"<span style='color:{neutral_color}'>Neutral Sentiment Score:</span> <code style='color:{neutral_color}'>{row['Neutral Sentiment Score']}</code>", unsafe_allow_html=True)
+                with df_col3:
+                    st.markdown(f"<span style='color:{negative_color}'>Negative Sentiment Score:</span> <code style='color:{negative_color}'>{row['Negative Sentiment Score']}</code>", unsafe_allow_html=True)
