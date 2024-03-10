@@ -2,11 +2,11 @@ import unittest
 from unittest.mock import patch, MagicMock
 import pandas as pd
 
-from dinero.backend.transform import find_count_value_change, get_filter_dates
+from backend.transform import find_count_value_change, get_filter_dates
 
 class TestStockAnalysis(unittest.TestCase):
 
-    @patch('dinero.backend.transform.pd.read_csv')
+    @patch('backend.transform.pd.read_csv')
     def test_find_count_value_change(self, mock_read_csv):
         # Mocking CSV file reading
         mock_data = {
@@ -24,8 +24,8 @@ class TestStockAnalysis(unittest.TestCase):
         result_negative = find_count_value_change('/Users/stlp/Documents/data557/final_project/new_pull/dinero/dinero/data/AAPL.csv', -5)
         self.assertEqual(result_negative, ['2024-03-02'])
 
-    @patch('dinero.backend.transform.pd.read_csv')
-    @patch('dinero.backend.transform.get_news_articles')
+    @patch('backend.transform.pd.read_csv')
+    @patch('backend.transform.get_news_articles')
     def test_get_filter_dates(self, mock_get_news_articles, mock_read_csv):
         # Mocking news articles fetching
         mock_get_news_articles.side_effect = [
@@ -43,7 +43,6 @@ class TestStockAnalysis(unittest.TestCase):
         
         # Test with mock data and stock_ticker 'ABC'
         result_ABC = get_filter_dates('/Users/stlp/Documents/data557/final_project/new_pull/dinero/dinero/data/AAPL.csv', 10, 'AAPL')
-        print(result_ABC)
         expected_result_ABC = {'2024-03-01': [{'content': 'Content 1', 'link': 'Link 1', 'title': 'Title 1'}]}
         self.assertDictEqual(result_ABC, expected_result_ABC)
 

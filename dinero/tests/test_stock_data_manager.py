@@ -78,7 +78,7 @@ class TestStockDataManager(unittest.TestCase):
         """
         mock_read_csv.return_value = pd.DataFrame({"Close": [100, 200, 300]})
         data = get_stock_data('MSFT')
-        mock_read_csv.assert_called_once_with("data\\MSFT.csv")
+        mock_read_csv.assert_called_once_with(os.path.join("data","MSFT.csv"))
         self.assertIsInstance(data, pd.DataFrame)
         self.assertEqual(len(data), 3)
 

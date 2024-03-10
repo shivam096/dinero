@@ -1,8 +1,8 @@
 from pprint import pprint
-from dinero.backend.sentiment_analysis import get_sentiment_value
-from dinero.backend.req import get_news_articles
-from dinero.backend.transform import get_filter_dates
-from dinero.backend.kpi_manager import get_technical_indicator
+from backend.sentiment_analysis import get_sentiment_value
+from backend.req import get_news_articles
+from backend.transform import get_filter_dates
+from backend.kpi_manager import get_technical_indicator
 
 sentiment_date = {}
 stock_symbol = "AAPL"

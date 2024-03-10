@@ -1,5 +1,5 @@
 import unittest
-from dinero.backend.sentiment_analysis import get_sentiment_value
+from backend.sentiment_analysis import get_sentiment_value
 
 class TestSentimentAnalysis(unittest.TestCase):
     """Test case for sentiment analysis module."""

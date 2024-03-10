@@ -4,7 +4,7 @@ from pprint import pprint
 import pandas as pd
 import numpy as np
 
-from dinero.backend.req import get_news_articles
+from backend.req import get_news_articles
 
 
 def find_count_value_change(file : str, value_change: int) -> list:
