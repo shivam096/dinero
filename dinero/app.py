@@ -104,34 +104,33 @@ with tab1:
 
 with tab2:
     st.markdown("<h2 style='color:{}; text-align: center;'>BEYOND HEADLINES : DECODING NEWS SENTIMENT</h2>".format(heading_color), unsafe_allow_html=True)
-    with st.expander(f"**Headline**"):
-        st.write("This is the News Article (if relevant)")
-
     # Display the metrics in a single row
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.markdown("<h1 style='color:{}; text-align: center;'>0.70</h1>".format(positive_color), unsafe_allow_html=True)
+        average_positive_score = round(df['Positive Sentiment Score'].mean(),2)
+        average_negative_score = round(df['Negative Sentiment Score'].mean(),2)
+        average_neutral_score = round(df['Neutral Sentiment Score'].mean(),2)
+        # average_compound_score = round(df['Compound Sentiment Score'].mean(),2)
+
+        st.markdown("<h1 style='color:{positive_color}; text-align: center;'>{average_positive_score}</h1>", unsafe_allow_html=True)
         st.markdown("<p style='text-align: center;'>Positive Sentiment Score 😄</p>", unsafe_allow_html=True)
 
     # Metric 2: Neutral Sentiment Score
     with col2:
-        st.markdown("<h1 style='color:{}; text-align: center;'>0.50</h1>".format(neutral_color), unsafe_allow_html=True)
+        st.markdown("<h1 style='color:{neutral_color}; text-align: center;'>{average_neutral_score}</h1>", unsafe_allow_html=True)
         st.markdown("<p style='text-align: center;'>Neutral Sentiment Score 😐</p>", unsafe_allow_html=True)
 
     # Metric 3: Negative Sentiment Score
     with col3:
-        st.markdown("<h1 style='color:{}; text-align: center;'>0.23</h1>".format(negative_color), unsafe_allow_html=True)
+        st.markdown("<h1 style='color:{negative_color}; text-align: center;'>{average_negative_score}</h1>", unsafe_allow_html=True)
         st.markdown("<p style='text-align: center;'>Negative Sentiment Score ☹️</p>", unsafe_allow_html=True)
-
-    # Date range selection
-    date_range = st.selectbox('Select date range:', ['Past 30 days', 'Past 120 days', 'Past 7 days'])
 
     if df.empty:
         st.write("No headlines found")
     else:
         for index, row in df.iterrows():
-            with st.expander(f"{row['Date'].strftime('%Y-%m-%d')}: {row['Headline']}"):
+            with st.expander(f"{row['Date'].strftime('%Y-%m-%d')}: {row['Title']}"):
                 df_col1, df_col2, df_col3 = st.columns(3)
                 with df_col1:
                     st.markdown(f"<span style='color:{positive_color}'>Positive Sentiment Score:</span> <code style='color:{positive_color}'>{row['Positive Sentiment Score']}</code>", unsafe_allow_html=True)
