@@ -1,10 +1,10 @@
 import unittest
 from unittest.mock import patch
-from dinero.backend.req import get_news_articles
+from backend.req import get_news_articles
 
 class TestGetNewsArticles(unittest.TestCase):
 
-    @patch('dinero.backend.req.requests.get')
+    @patch('backend.req.requests.get')
     def test_get_news_articles_success(self, mock_get):
         # Arrange
         mock_response = {
@@ -29,7 +29,7 @@ class TestGetNewsArticles(unittest.TestCase):
         self.assertEqual(result['articles'][1]['title'], 'Article 2')
         self.assertEqual(result['articles'][1]['content'], 'Content 2')
 
-    @patch('dinero.backend.req.requests.get')
+    @patch('backend.req.requests.get')
     def test_get_news_articles_api_failure(self, mock_get):
         # Arrange
         mock_response = {"status": "error", "message": "API error"}
