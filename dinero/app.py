@@ -6,8 +6,8 @@ import plotly.graph_objects as go
 from backend.visualization import plot_stock_price
 from backend.visualization import plot_kpis
 from backend.kpi_manager import get_technical_indicator
-from backend.app_functions import retrieve_data, streamlit_filtering_by_date
 from backend.stock_data_manager import download_stock_data, update_stock_data, get_existing_tickers
+from backend.sentiment_analysis import get_sentiment_value
 
 
 st.set_page_config(layout="wide")
