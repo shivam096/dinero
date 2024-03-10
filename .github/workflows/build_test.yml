@@ -84,10 +84,6 @@ jobs:
       # If there are any other steps in order for your tests to
       # run successfully, you can add those steps here!
 
-      - name: Lint with pylint
-        run: |
-          pylint dinero/**/*.py 2>&1 | grep -v "The operation was canceled" || exit 0
-
 
       # Next step: run the unit tests with code coverage.
       - name: Unit tests
