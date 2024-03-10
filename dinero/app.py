@@ -6,6 +6,9 @@ import plotly.graph_objects as go
 from backend.visualization import plot_stock_price
 from backend.visualization import plot_kpis
 from backend.kpi_manager import get_technical_indicator
+from backend.app_functions import retrieve_data, streamlit_filtering_by_date
+from backend.stock_data_manager import download_stock_data, update_stock_data, get_existing_tickers
+
 
 st.set_page_config(layout="wide")
 
@@ -37,13 +40,13 @@ df = pd.DataFrame(data)
 df['Date'] = pd.to_datetime(df['Date'])
 
 
-company_stock_mapping = {
-    "AAPL" : "APPLE",
-    "GOOG" : "GOOGLE",
-    "MSFT" : "MICROSOFT",
-    "NVDA" : "NVIDIA",
-    "TSLA" : "TESLA"
-}
+# company_stock_mapping = {
+#     "AAPL" : "APPLE",
+#     "GOOG" : "GOOGLE",
+#     "MSFT" : "MICROSOFT",
+#     "NVDA" : "NVIDIA",
+#     "TSLA" : "TESLA"
+# }
 
 kpi_description_mapping = {
     "MA" : "The <span style='color:#D24545'><b>Moving Average (MA)</b></span> helps <span style='color:#AEDEFC'><i>smooth out short-term price fluctuations</i></span> to reveal the underlying trend. Imagine calculating the average price of a stock over a set period (like 20 days or 50 days). This helps <span style='color:#AEDEFC'><i>visualize the general direction (upward, downward, or sideways)</i></span> and spot trends to figure out when the stock might change direction.",
@@ -55,14 +58,14 @@ kpi_description_mapping = {
 st.image("frontend/logo.png", use_column_width=True)
 
 st.sidebar.header("Filters for Data")
-company_option = st.sidebar.selectbox('Select one symbol', ('AAPL', 'GOOG', 'MSFT', 'NVDA', 'TSLA'))
+company_option = st.sidebar.selectbox('Select one symbol', set(get_existing_tickers()))
 
 percentage_change_option = st.sidebar.selectbox('Select Percentage Change in Stock Price', ('10%', '5%', '-5%', '-10%'))
 
-tab1, tab2 = st.tabs(["Stock Visualizations and Technical Indicators", "News Headlines and Articles"])
+tab1, tab2,tab3 = st.tabs(["Stock Visualizations and Technical Indicators", "News Headlines and Articles", "Download Data"])
 
 with tab1:
-    st.markdown("<h2 style='color:{}; text-align: center;'>{} STOCK PERFORMANCE VISUALIZATION</h2>".format(heading_color, company_stock_mapping[company_option]), unsafe_allow_html=True)
+    st.markdown("<h2 style='color:{}; text-align: center;'>{} STOCK PERFORMANCE VISUALIZATION</h2>".format(heading_color, company_option), unsafe_allow_html=True)
     # create vis
     fig_price = plot_stock_price(company_option)
 
@@ -136,3 +139,22 @@ with tab2:
                     st.markdown(f"<span style='color:{neutral_color}'>Neutral Sentiment Score:</span> <code style='color:{neutral_color}'>{row['Neutral Sentiment Score']}</code>", unsafe_allow_html=True)
                 with df_col3:
                     st.markdown(f"<span style='color:{negative_color}'>Negative Sentiment Score:</span> <code style='color:{negative_color}'>{row['Negative Sentiment Score']}</code>", unsafe_allow_html=True)
+
+with tab3:
+    selected_ticker = st.text_input('Input a ticker symbol:')
+    selected_time = st.text_input('Input a time period')
+
+    if st.button("Click button to download data"):
+
+        selected_ticker = selected_ticker.upper()
+
+        if len(selected_time) == 0:
+            download_stock_data(selected_ticker)
+        else:
+            selected_time = selected_time.lower()
+            if not (selected_time == 'max' or selected_time[-1] in ['d','y'] or selected_time[-2:] in ['wk','mo']):
+                raise ValueError("period_str formats: 'max', 'd', 'wk', 'mo', 'y' (case insensitive).")
+            download_stock_data(selected_ticker, selected_time)
+
+    if st.button("Click button to update data"):
+        update_stock_data()
