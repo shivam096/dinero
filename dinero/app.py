@@ -14,6 +14,8 @@ from backend.processing import get_sentiments
 st.set_page_config(layout="wide")
 
 heading_color = "#86B6F6"
+news_article_color = "#E3DFFD"
+news_article_date_color = "#89CFF3"
 title_color = "#DBE7C9"
 positive_color = "#527853"  # Green
 neutral_color = "#B4B4B8"    # Yellow
@@ -22,6 +24,7 @@ negative_color = "#D24545"   # Red
 # df = pd.DataFrame(data)
 # df['Date'] = pd.to_datetime(df['Date'])
 
+st.title("Cool chart!")
 kpi_description_mapping = {
     "MA" : "The <span style='color:#D24545'><b>Moving Average (MA)</b></span> helps <span style='color:#AEDEFC'><i>smooth out short-term price fluctuations</i></span> to reveal the underlying trend. Imagine calculating the average price of a stock over a set period (like 20 days or 50 days). This helps <span style='color:#AEDEFC'><i>visualize the general direction (upward, downward, or sideways)</i></span> and spot trends to figure out when the stock might change direction.",
     "RSI": "<span style='color:#D24545'><b>Relative Strength Index (RSI)</b></span> is like a speedometer for stocks! It tells us <span style='color:#AEDEFC'><i>how fast the price of a stock is changing.</i></span> When RSI is <span style='color:#AEDEFC'><i>high</i></span>, it means the stock might be <span style='color:#AEDEFC'><i>going up too fast and could slow down.</i></span> When RSI is <span style='color:#AEDEFC'><i>low</i></span>, it means the stock might be <span style='color:#AEDEFC'><i>going down too fast and could bounce back up.</i></span>",
@@ -41,7 +44,7 @@ st.image("frontend/logo.png", use_column_width=True)
 # # percentage_change_option = st.sidebar.selectbox('Select Percentage Change in Stock Price', ('10%', '5%', '-5%', '-10%'))
 # percentage_change_option = st.sidebar.selectbox('Select Percentage Change in Stock Price', (10, 5, -5, -10))
 
-tab1, tab2, tab3, tab4 = st.tabs(["Stock Performance Visualization", "Stock Technical Indicators", "News Headlines and Articles", "Download Data"])
+tab1, tab2, tab3, tab4 = st.tabs(["📈 Stock Performance Overview", "🔍 Explore Stock Technical Indicators", "📰 Latest News Headlines and Articles", "💡 Explore More Tickers or Update Data!"])
 
 with tab1:
     #st.markdown(f"<h4 style='color:{title_color};'></h4>", unsafe_allow_html=True)
@@ -114,7 +117,6 @@ with tab3:
             average_positive_score = round(df['Positive Sentiment Score'].mean(),2)
             average_negative_score = round(df['Negative Sentiment Score'].mean(),2)
             average_neutral_score = round(df['Neutral Sentiment Score'].mean(),2)
-            # average_compound_score = round(df['Compound Sentiment Score'].mean(),2)
 
             st.markdown(f"<h1 style='color:{positive_color}; text-align: center;'>{average_positive_score}</h1>", unsafe_allow_html=True)
             st.markdown(f"<p style='text-align: center;'>Positive Sentiment Score 😄</p>", unsafe_allow_html=True)
@@ -129,76 +131,28 @@ with tab3:
             st.markdown(f"<h1 style='color:{negative_color}; text-align: center;'>{average_negative_score}</h1>", unsafe_allow_html=True)
             st.markdown(f"<p style='text-align: center;'>Negative Sentiment Score ☹️</p>", unsafe_allow_html=True)
 
+        st.markdown('<hr class="horizontal-line">', unsafe_allow_html=True)
+
         for index, row in df.iterrows():
-            #with st.container():
-            with st.expander(f"{row['Date'].strftime('%Y-%m-%d')}: {row['Title']}"):
+
+            with st.container():
+                st.markdown(f"<h4><span style='color:{news_article_date_color}'>{row['Date'].strftime('%B %d, %Y')} : </span><span><a href='{row['Link']}' target='_blank' style='color:{news_article_color}'>{row['Title']}</a></span></h4>", unsafe_allow_html=True)
+            # with st.expander(f"{row['Date'].strftime('%Y-%m-%d')}: {row['Title']}"):
                 df_col1, df_col2, df_col3 = st.columns(3)
                 with df_col1:
-                    st.markdown(f"<span style='color:{positive_color}'>Positive Sentiment Score:</span> <code style='color:{positive_color}'>{row['Positive Sentiment Score']}</code>", unsafe_allow_html=True)
+                    st.markdown(f"<h6 style='color:{positive_color}'>Positive Sentiment Score: <code style='color:{positive_color}'>{row['Positive Sentiment Score']}</code></h6>", unsafe_allow_html=True)
                 with df_col2:
-                    st.markdown(f"<span style='color:{neutral_color}'>Neutral Sentiment Score:</span> <code style='color:{neutral_color}'>{row['Neutral Sentiment Score']}</code>", unsafe_allow_html=True)
+                    st.markdown(f"<h6 style='color:{neutral_color}'>Neutral Sentiment Score: <code style='color:{neutral_color}'>{row['Neutral Sentiment Score']}</code></h6>", unsafe_allow_html=True)
                 with df_col3:
-                    st.markdown(f"<span style='color:{negative_color}'>Negative Sentiment Score:</span> <code style='color:{negative_color}'>{row['Negative Sentiment Score']}</code>", unsafe_allow_html=True)
+                    st.markdown(f"<h6 style='color:{negative_color}'>Negative Sentiment Score:<code style='color:{negative_color}'>{row['Negative Sentiment Score']}</code></h6>", unsafe_allow_html=True)
 
-
-# with tab3:
-#     st.markdown("<h2 style='color:{}; text-align: center;'>BEYOND HEADLINES : DECODING NEWS SENTIMENT</h2>".format(heading_color), unsafe_allow_html=True)
-#     # Display the metrics in a single row
-#     start_date = ""
-#     end_date = ""
-#     input_col1, input_col2, = st.columns(2)
-#     with input_col1:
-#         start_date = st.date_input('Start Date', value="2023-07-12")
-#         end_date = st.date_input('End Date', value="2024-03-12")
-#         if start_date >= end_date:
-#             st.error('Please enter correct dates. Start date should be earlier than end date.')
-
-#     with input_col2:
-#         percentage_change_option = st.number_input('Input a length', value=5, format='%d')
-
-#     df = get_sentiments(company_option, percentage_change_option)
-#     df = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
-#     df['Date'] = pd.to_datetime(df['Date'])
-
-#     col1, col2, col3 = st.columns(3)
-#     if df.empty:
-#         st.write(f"<h5 style='color:{title_color}; text-align: center;'>Oops! 😔 We couldn't find any headlines matching your selected filters.</h5>", unsafe_allow_html=True)
-#         st.write(f"<h5 style='color:{title_color}; text-align: center;'>📰 Try adjusting the date range or changing the percentage change in prices to discover more news stories! 💡</h5>",unsafe_allow_html=True)
-#     else:
-#         with col1:
-#             average_positive_score = round(df['Positive Sentiment Score'].mean(),2)
-#             average_negative_score = round(df['Negative Sentiment Score'].mean(),2)
-#             average_neutral_score = round(df['Neutral Sentiment Score'].mean(),2)
-#             # average_compound_score = round(df['Compound Sentiment Score'].mean(),2)
-
-#             st.markdown(f"<h1 style='color:{positive_color}; text-align: center;'>{average_positive_score}</h1>", unsafe_allow_html=True)
-#             st.markdown(f"<p style='text-align: center;'>Positive Sentiment Score 😄</p>", unsafe_allow_html=True)
-
-#         # Metric 2: Neutral Sentiment Score
-#         with col2:
-#             st.markdown(f"<h1 style='color:{neutral_color}; text-align: center;'>{average_neutral_score}</h1>", unsafe_allow_html=True)
-#             st.markdown(f"<p style='text-align: center;'>Neutral Sentiment Score 😐</p>", unsafe_allow_html=True)
-
-#         # Metric 3: Negative Sentiment Score
-#         with col3:
-#             st.markdown(f"<h1 style='color:{negative_color}; text-align: center;'>{average_negative_score}</h1>", unsafe_allow_html=True)
-#             st.markdown(f"<p style='text-align: center;'>Negative Sentiment Score ☹️</p>", unsafe_allow_html=True)
-
-#         for index, row in df.iterrows():
-#             with st.expander(f"{row['Date'].strftime('%Y-%m-%d')}: {row['Title']}"):
-#                 df_col1, df_col2, df_col3 = st.columns(3)
-#                 with df_col1:
-#                     st.markdown(f"<span style='color:{positive_color}'>Positive Sentiment Score:</span> <code style='color:{positive_color}'>{row['Positive Sentiment Score']}</code>", unsafe_allow_html=True)
-#                 with df_col2:
-#                     st.markdown(f"<span style='color:{neutral_color}'>Neutral Sentiment Score:</span> <code style='color:{neutral_color}'>{row['Neutral Sentiment Score']}</code>", unsafe_allow_html=True)
-#                 with df_col3:
-#                     st.markdown(f"<span style='color:{negative_color}'>Negative Sentiment Score:</span> <code style='color:{negative_color}'>{row['Negative Sentiment Score']}</code>", unsafe_allow_html=True)
+                st.markdown('<hr class="horizontal-line">', unsafe_allow_html=True)
 
 with tab4:
-    selected_ticker = st.text_input('Input a ticker symbol:')
-    selected_time = st.text_input('Input a time period')
+    selected_ticker = st.text_input('➕ Add New Ticker')
+    selected_time = st.text_input("🕒 Input a time period [valid formats include days ('d'), weeks ('wk'), months ('mo'), years ('y')]")
 
-    if st.button("Click button to download data"):
+    if st.button("🔄 Update Ticker Data"):
 
         selected_ticker = selected_ticker.upper()
 
@@ -209,6 +163,7 @@ with tab4:
             if not (selected_time == 'max' or selected_time[-1] in ['d','y'] or selected_time[-2:] in ['wk','mo']):
                 raise ValueError("period_str formats: 'max', 'd', 'wk', 'mo', 'y' (case insensitive).")
             download_stock_data(selected_ticker, selected_time)
-
-    if st.button("Click button to update data"):
+            st.experimental_rerun()
+    if st.button("🔁 Click to Update Ticker Data to the Most Recent"):
         update_stock_data()
+        st.experimental_rerun()
