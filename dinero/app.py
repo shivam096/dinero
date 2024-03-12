@@ -7,7 +7,7 @@ from datetime import datetime
 from backend.visualization import plot_stock_price
 from backend.visualization import plot_kpis
 from backend.kpi_manager import get_technical_indicator
-from backend.stock_data_manager import download_stock_data, update_stock_data, get_existing_tickers
+from backend.stock_data_manager import download_stock_data, update_stock_data, get_existing_tickers, get_last_n_days
 from backend.processing import get_sentiments
 
 
@@ -41,7 +41,7 @@ st.image("frontend/logo.png", use_column_width=True)
 # # percentage_change_option = st.sidebar.selectbox('Select Percentage Change in Stock Price', ('10%', '5%', '-5%', '-10%'))
 # percentage_change_option = st.sidebar.selectbox('Select Percentage Change in Stock Price', (10, 5, -5, -10))
 
-tab1, tab2, tab3, tab4 = st.tabs(["Stock Performance Visualization", "Stock Technical Indictors", "News Headlines and Articles", "Download Data"])
+tab1, tab2, tab3, tab4 = st.tabs(["Stock Performance Visualization", "Stock Technical Indicators", "News Headlines and Articles", "Download Data"])
 
 with tab1:
     #st.markdown(f"<h4 style='color:{title_color};'></h4>", unsafe_allow_html=True)
@@ -95,12 +95,13 @@ with tab3:
     input_col1, input_col2 = st.columns(2)
 
     with input_col1:
-        pass
+        number_of_days = st.number_input('Select News Date Range 📅 (eg. 30 days, 60 days)', value=90, format='%d')
 
     with input_col2:
-        percentage_change_option = st.number_input('Input a length', value=5, format='%d')
+        percentage_change_option = st.number_input('Choose Stock Price Change % 📈', value=5, format='%d')
 
     df = get_sentiments(company_option, percentage_change_option)
+    df = get_last_n_days(df,number_of_days)
     df['Date'] = pd.to_datetime(df['Date'])
     # df.reset_index(inplace=True)
 
@@ -129,6 +130,7 @@ with tab3:
             st.markdown(f"<p style='text-align: center;'>Negative Sentiment Score ☹️</p>", unsafe_allow_html=True)
 
         for index, row in df.iterrows():
+            #with st.container():
             with st.expander(f"{row['Date'].strftime('%Y-%m-%d')}: {row['Title']}"):
                 df_col1, df_col2, df_col3 = st.columns(3)
                 with df_col1:
