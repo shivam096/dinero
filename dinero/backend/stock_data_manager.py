@@ -56,6 +56,8 @@ def download_stock_data(ticker_symbol, period_str='5y'):
     """
     if not (isinstance(ticker_symbol, str) and isinstance(period_str, str)):
         raise TypeError("Arguments must be strings.")
+    if not os.path.exists(DEFAULT_DATABASE_PATH):
+        os.makedirs(DEFAULT_DATABASE_PATH)
     period_str = period_str.lower()
     ticker_symbol = ticker_symbol.upper()
     if not (period_str == 'max' or period_str[-1] in ['d','y']
