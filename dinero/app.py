@@ -165,32 +165,30 @@ with tab1:
         fig_price.update(st.session_state.initial_view)
 
     with st.expander("🛈 How to Read a Candlestick Chart?"):
-        st.markdown(f'''Each candlestick represents a <span style='color:
-                    {HIGHLIGHT_COLOR_BLUE}'><i>specific time period</i></span>
-                    (e.g., one day), displaying four key prices:
-                    <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>
-                    the opening price, the closing price, the highest
-                    price (high), and the lowest price (low).</i></span>
-                    The body of the candlestick, typically <span style='color:
-                    {HIGHLIGHT_COLOR_BLUE}'><i>colored
-                    differently for <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>
-                    positive and negative price movements,</i></span>
-                    illustrates the <span style='color:
-                    {HIGHLIGHT_COLOR_BLUE}'><i>difference between
-                    the opening and closing prices.</i></span> If the
-                    <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>closing
-                    price is higher than the opening price, the
-                    candlestick is colored green, indicating a
-                    price increase,</i></span> while a
-                    <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>
-                    red candlestick signifies a price decrease.</i></span>
-                    The thin lines above and below the body, called shadows or
-                    wicks, represent the range between the highest
-                    and lowest prices during the period.
-                    Understanding candlestick patterns and
-                    their formations can provide insights into
-                    market sentiment and potential future price
-                    movements.''', unsafe_allow_html=True)
+        st.markdown(f'''
+            Each candlestick represents a <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>specific time period</i></span>
+            (e.g., one day), displaying four key prices:
+            <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>the opening price, the closing price, the highest
+            price (high), and the lowest price (low).</i></span>
+            The body of the candlestick, typically <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>colored
+            differently for positive and negative price movements,</i></span>
+            illustrates the <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>difference between
+            the opening and closing prices.</i></span> If the
+            <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>closing
+            price is higher than the opening price, the
+            candlestick is colored green, indicating a
+            price increase,</i></span> while a
+            <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>
+            red candlestick signifies a price decrease.</i></span>
+            The thin lines above and below the body, called shadows or
+            wicks, represent the range between the highest
+            and lowest prices during the period.
+            Understanding candlestick patterns and
+            their formations can provide insights into
+            market sentiment and potential future price
+            movements.
+        ''', unsafe_allow_html=True)
+
 
 with tab2:
     st.markdown(f'''<h2 style='color:{HEADING_COLOR}; text-align: center;'>
