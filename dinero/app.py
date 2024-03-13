@@ -139,6 +139,25 @@ kpi_chart_info_mapping = {
 
 st.image("frontend/logo.png", use_column_width=True)
 
+st.sidebar.markdown(f'''<h1 style='color:{NEWS_ARTICLE_DATE_COLOR}; text-align: center;'>
+                📊 Welcome the the Stock Analysis Platform!</h1>''',
+                unsafe_allow_html=True)
+st.sidebar.markdown(f'''<h2 style='color:{NEWS_ARTICLE_COLOR}; text-align: center;'>
+                Click on the various tabs to dive deep into stock data and
+                news headlines! 💼📰</h2>''',
+                unsafe_allow_html=True)
+st.sidebar.markdown(f'''<h2 style='color:{NEWS_ARTICLE_COLOR}; text-align: center;'>
+                Use the filters to select company, date range,
+                and technical indicators, to ensure you get
+                tailored insights! 📅🔍</h2>''',
+                unsafe_allow_html=True)
+st.sidebar.markdown(f'''<h2 style='color:{NEWS_ARTICLE_COLOR}; text-align: center;'>
+                Understand the sentiment and keywords of
+                news events, and analyze their correlation
+                with stock price movements! 📈🔍</h2>''',
+                unsafe_allow_html=True)
+
+
 tab1, tab2, tab3, tab4 = st.tabs(["📈 Stock Performance Overview",
                                   "🔍 Explore Stock Technical Indicators",
                                   "📰 Latest News Headlines and Articles",
