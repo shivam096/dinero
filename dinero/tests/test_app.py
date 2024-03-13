@@ -189,7 +189,7 @@ class TestStreamlitApp(unittest.TestCase):
         mock_get_sentiment.return_value = self.mocked_sentiment_dataframe
         app_test= AppTest.from_file("../app.py").run()
         app_test= AppTest.from_file("../app.py").run()
-        assert app_test.tabs[3].button[0].label == "🔁 Click to Update Ticker Data to the Most Recent"
+        assert app_test.tabs[3].button[0].label=="🔁 Click to Update Ticker Data to the Most Recent"
         app_test.tabs[3].button[0].click().run()
         assert not app_test.exception
 

@@ -72,7 +72,7 @@ class TestStockAnalysis(unittest.TestCase):
         result_aapl= get_filter_dates(
             '../data/AAPL.csv', 10, 'AAPL')
         expected_result_aapl = {'2024-03-01': [{'content': 'Content 1',
-                                                'link': 'Link 1', 
+                                                'link': 'Link 1',
                                                 'title': 'Title 1'}]}
         self.assertDictEqual(result_aapl, expected_result_aapl)
 
