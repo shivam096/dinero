@@ -69,7 +69,7 @@ class TestStockDataManager(unittest.TestCase):
         tikers = update_stock_data()
         self.assertIsInstance(tikers, list)
 
-    
+
     @mock.patch("backend.stock_data_manager.pd.read_csv")
     def test_get_stock_data(self, mock_read_csv):
         """

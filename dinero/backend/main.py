@@ -14,10 +14,37 @@ stock_symbol = "AAPL"
 
 print(get_sentiments(stock_symbol,percent_change))
 
-# usage of KPI
-ticker_symbol = 'AAPL'
-length = 50
-indicator = 'MA'
 
-indicator_data = get_technical_indicator(ticker_symbol, length, indicator)
-print(indicator_data)
+# data = {
+#     'Date': [],
+#     'Title': [],
+#     'Link': [],
+#     'Compound Sentiment Score': [],
+#     'Positive Sentiment Score': [],
+#     'Negative Sentiment Score': [],
+#     'Neutral Sentiment Score': []
+# }
+
+# for date, articles in sentiment_date.items():
+#     for title, details in articles.items():
+#         data['Date'].append(date)
+#         data['Title'].append(title)
+#         data['Link'].append(details['link'])
+#         data['Compound Sentiment Score'].append(details['sentiment_score']['compound'])
+#         data['Positive Sentiment Score'].append(details['sentiment_score']['pos'])
+#         data['Negative Sentiment Score'].append(details['sentiment_score']['neg'])
+#         data['Neutral Sentiment Score'].append(details['sentiment_score']['neu'])
+
+# df = pd.DataFrame(data)
+# print(df)
+
+
+
+
+# # usage of KPI
+# ticker_symbol = 'AAPL'
+# length = 50
+# indicator = 'MA'
+
+# indicator_data = get_technical_indicator(ticker_symbol, length, indicator)
+# print(indicator_data)

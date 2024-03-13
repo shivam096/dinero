@@ -35,7 +35,7 @@ class TestVisualization(unittest.TestCase):
         self.assertEqual(stock_price_fig.data[0].type, 'candlestick')
         self.assertEqual(stock_price_fig.layout.hovermode, 'x unified')
         self.assertEqual(stock_price_fig.layout.title['text'],
-                         'MSFT Stock Candlestick Chart')
+                         'Candlestick Chart')
         self.assertEqual(stock_price_fig.layout.xaxis.title['text'], 'Date')
         self.assertEqual(stock_price_fig.layout.yaxis.title['text'], 'Price')
 
@@ -89,7 +89,7 @@ class TestVisualization(unittest.TestCase):
                          'ROC for MSFT')
         self.assertEqual(len(kpi_fig.data), 2)
         self.assertEqual(kpi_fig.data[0].type, 'scatter')
-        self.assertEqual(kpi_fig.data[0].name, 'Stock Close Price')
+        self.assertEqual(kpi_fig.data[0].name, 'Close Price')
         self.assertEqual(kpi_fig.data[1].type, 'scatter')
         self.assertEqual(kpi_fig.data[1].name, 'ROC')
 
