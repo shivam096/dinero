@@ -44,6 +44,10 @@ def calculate_bollinger_bands_percent(data, length=20, num_std_dev=2):
 
 def _formatted_dataframe(data, indicator, name):
     """Formats the resulting DataFrame by appending the date and the calculated indicator."""
+    if not isinstance(data, pd.DataFrame):
+        raise TypeError("data must be a pandas DataFrame")
+    if not isinstance(name, str):
+        raise TypeError("name must be a string")
     result_df = pd.DataFrame()
     result_df['Date'] = data['Date']
     result_df[name] = indicator

@@ -16,7 +16,8 @@ def get_sentiment_value(title_list: list) -> dict:
     VADER (Valence Aware Dictionary and sEntiment Reasoner).
 
     Args:
-    - title_list (list): A list of strings representing titles or sentences to analyze.
+    - title_list (list): A list of dictionaries representing titles or sentences to analyze.
+                         Each dictionary should have 'title', 'content', and 'link' keys.
 
     Returns:
     - dict: A dictionary where keys are the titles/sentences and 
@@ -27,7 +28,10 @@ def get_sentiment_value(title_list: list) -> dict:
     senti_dict = {}
     analyzer = SentimentIntensityAnalyzer()
     for sentence in title_list:
-        vs = analyzer.polarity_scores(sentence.get('content'))
-        senti_dict[sentence.get('title')] = {'sentiment_score':vs, 'link':sentence.get('link')}
+        content = sentence['content']
+        title = sentence['title']
+        link = sentence['link']
+        vs = analyzer.polarity_scores(content)
+        senti_dict[title] = {'sentiment_score': vs, 'link': link}
 
     return senti_dict

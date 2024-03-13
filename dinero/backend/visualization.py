@@ -48,7 +48,7 @@ def plot_stock_price(ticker_symbol):
                                             name='Candlestick'))
 
     # Update layout for candlestick chart
-    fig_candlestick.update_layout(title=f'Candlestick Chart',
+    fig_candlestick.update_layout(title=f'{ticker_symbol} Candlestick Chart',
                                 xaxis_title="Date", yaxis_title="Price")
     fig_candlestick.update_layout(hovermode="x unified")
     fig_candlestick.update_xaxes(rangeselector={'buttons': TIME_BUTTONS})
