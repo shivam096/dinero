@@ -141,3 +141,38 @@ def get_filtered_stock_data(ticker_symbol, start_date='1900-01-01', end_date='')
         raise ValueError("Start date after end date.")
 
     return stock_data.query(f"'{start_date}' <= Date <= '{end_date}'")
+
+def get_last_n_days(df, n_days):
+    """
+    Extracts the last n_days rows from the DataFrame.
+
+    Parameters:
+        df (DataFrame): Input DataFrame.
+        n_days (int): Number of days from the end of the DataFrame.
+
+    Returns:
+        DataFrame: DataFrame containing the last n_days rows, or the entire
+        DataFrame if n_days exceeds the number of rows.
+
+
+    Raises:
+    ValueError:
+        If the number of days entered is a negative integer or 0.
+    TypeError:
+        If the number of days enetered is not an integer
+    """
+
+    # Ensure n_days is a positive integer
+    if not isinstance(n_days, int):
+        raise TypeError("Number of Days must be an Integer")
+    if n_days <= 0:
+        raise ValueError("Number of days must be a positive integer")
+
+    # Check if n_days exceeds the number of rows in the DataFrame
+    if n_days >= len(df):
+        return df  # Return the entire DataFrame
+
+    # Get the last n_days rows from the DataFrame
+    last_n_days_df = df.iloc[-n_days:]
+
+    return last_n_days_df
