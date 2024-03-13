@@ -35,12 +35,6 @@ def find_count_value_change(file: str, value_change: int) -> list:
             change_df = stock_data[stock_data['Percent Change'] <= value_change]
 
         return change_df['Date'].to_list()
-    except FileNotFoundError as e:
-        print(f"Error: File not found - {e}")
-        return None
-    except pd.errors.EmptyDataError as e:
-        print(f"Error: Empty data in CSV file - {e}")
-        return None
     except Exception as e:
         print(f"Error in find_count_value_change: {e}")
         return None
@@ -77,12 +71,6 @@ def get_filter_dates(file_path: str, percent_change: int, stock_ticker: str):
                 news_articles_links[date] = []  # Empty list for this date
 
         return news_articles_links
-    except FileNotFoundError as e:
-        print(f"Error: File not found - {e}")
-        return None
-    except pd.errors.EmptyDataError as e:
-        print(f"Error: Empty data in CSV file - {e}")
-        return None
     except Exception as e:
         print(f"Error in get_filter_dates: {e}")
         return None

@@ -34,8 +34,6 @@ def get_sentiment_value(title_list: list) -> dict:
             link = sentence['link']
             vs = analyzer.polarity_scores(content)
             senti_dict[title] = {'sentiment_score': vs, 'link': link}
-        except KeyError as e:
-            print(f"Error: Missing key in input data - {e}")
         except Exception as e:
             print(f"Error occurred while processing: {e}")
 
