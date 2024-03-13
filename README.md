@@ -1,6 +1,9 @@
 # dinero
 Repository for *DATA 515 : Software Design for Data Scientists*
 
+# Technical dependency
+The application supports only Python versions 3.9 and 3.10. Python 3.11 incorporation is still in the works.
+
 ## Project Type
  Creating Reusable Data 
 
