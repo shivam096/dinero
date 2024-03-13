@@ -41,19 +41,19 @@ class TestDineroAnalysis(unittest.TestCase):
         expected_columns = ['Date', 'Title', 'Link', 'Compound Sentiment Score',
                             'Positive Sentiment Score', 'Negative Sentiment Score',
                             'Neutral Sentiment Score']
-        df = process_dict_to_df(self.sentiment_data)
-        self.assertIsInstance(df, pd.DataFrame)
-        self.assertCountEqual(df.columns.tolist(), expected_columns)
-        self.assertEqual(len(df), 4)  # Check if all articles are processed
+        dataframe = process_dict_to_df(self.sentiment_data)
+        self.assertIsInstance(dataframe, pd.DataFrame)
+        self.assertCountEqual(dataframe.columns.tolist(), expected_columns)
+        self.assertEqual(len(dataframe), 4)  # Check if all articles are processed
 
     def test_get_sentiments(self):
         """
         Test the get_sentiments function with valid and invalid inputs.
         """
         # Test the get_sentiments function with valid inputs
-        df = get_sentiments('AAPL', 2.0)  # Example valid stock symbol and percent change
-        self.assertIsInstance(df, pd.DataFrame)
-        self.assertGreater(len(df), 0)  # Check if DataFrame is not empty
+        dataframe = get_sentiments('AAPL', 2.0)  # Example valid stock symbol and percent change
+        self.assertIsInstance(dataframe, pd.DataFrame)
+        self.assertGreater(len(dataframe), 0)  # Check if DataFrame is not empty
 
         # Test the get_sentiments function with None inputs
         df_none_symbol = get_sentiments(None, 2.0)
