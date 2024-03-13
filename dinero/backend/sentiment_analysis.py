@@ -12,7 +12,7 @@ nltk.download('vader_lexicon')
 
 def get_sentiment_value(title_list: list) -> dict:
     """
-    Analyzes the sentiment of each title in the given list using 
+    Analyzes the sentiment of each title in the given list using
     VADER (Valence Aware Dictionary and sEntiment Reasoner).
 
     Args:
@@ -20,9 +20,9 @@ def get_sentiment_value(title_list: list) -> dict:
                          Each dictionary should have 'title', 'content', and 'link' keys.
 
     Returns:
-    - dict: A dictionary where keys are the titles/sentences and 
+    - dict: A dictionary where keys are the titles/sentences and
             values are dictionaries containing sentiment scores.
-            The sentiment scores include 'neg' (negative), 
+            The sentiment scores include 'neg' (negative),
             'neu' (neutral), 'pos' (positive), and 'compound' (overall sentiment).
     """
     senti_dict = {}
@@ -31,7 +31,7 @@ def get_sentiment_value(title_list: list) -> dict:
         content = sentence['content']
         title = sentence['title']
         link = sentence['link']
-        vs = analyzer.polarity_scores(content)
-        senti_dict[title] = {'sentiment_score': vs, 'link': link}
+        sentiment_score = analyzer.polarity_scores(content)
+        senti_dict[title] = {'sentiment_score': sentiment_score, 'link': link}
 
     return senti_dict

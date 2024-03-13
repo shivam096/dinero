@@ -33,8 +33,8 @@ def find_count_value_change(file: str, value_change: int) -> list:
             change_df = stock_data[stock_data['Percent Change'] <= value_change]
 
         return change_df['Date'].to_list()
-    except FileNotFoundError as e:
-        print(f"File Not Found: {e}")
+    except FileNotFoundError as error:
+        print(f"File Not Found: {error}")
         return None
 
 
@@ -62,7 +62,7 @@ def get_filter_dates(file_path: str, percent_change: int, stock_ticker: str):
                                           'link': i['link'], } for i in
                                             api_response if any(stock_ticker in symbol
                                                                 for symbol in i['symbols'])]
-        except KeyError as e:
-            print(f"Error: Invalid data format in news articles response - {e}")
+        except KeyError as error:
+            print(f"Error: Invalid data format in news articles response - {error}")
             news_articles_links[date] = []  # Empty list for this date
     return news_articles_links
