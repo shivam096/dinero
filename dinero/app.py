@@ -1,4 +1,3 @@
-# pylint: disable=invalid-escape
 """
 Module level docstring for Stock Dashboard Application
 
