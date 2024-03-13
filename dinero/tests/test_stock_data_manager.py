@@ -19,6 +19,7 @@ from backend.stock_data_manager import (
     update_stock_data,
     get_stock_data,
     get_filtered_stock_data,
+    get_last_n_days,
     DEFAULT_DATABASE_PATH
 )
 
@@ -30,9 +31,10 @@ class TestStockDataManager(unittest.TestCase):
         3. update_stock_data()
         4. get_stock_data(ticker_symbol)
         5. get_filtered_stock_data(ticker_symbol, start_date='', end_date='')
+        6. get_last_n_days(stock_data, n_days)
 
     Notes:
-    `get_existing_tickers` is TRIVIAL and is called by update_stock_data(),
+    2.`get_existing_tickers` is TRIVIAL and is called by update_stock_data(),
     so it has no explicit testing.
     """
 
@@ -40,22 +42,48 @@ class TestStockDataManager(unittest.TestCase):
     def test_default_download_stock_data(self, mock_download):
         """
         Test download with (valid) default period
-        (using mock to avoid changing database)
+        (using mock to simulate yfinance download)
         """
-        sample_data = f'{DEFAULT_DATABASE_PATH}/MSFT.csv'
-        mock_download.return_value = pd.read_csv(sample_data)
-        num = download_stock_data('valid_ticker')
+        mock_download.return_value = pd.DataFrame({"Close": [100, 200, 300]})
+        num = download_stock_data('test_ticker')
         self.assertIsInstance(num, int)
-        file_path = f'{DEFAULT_DATABASE_PATH}/VALID_TICKER.csv'
+        file_path = f'{DEFAULT_DATABASE_PATH}/TEST_TICKER.csv'
         self.assertTrue(os.path.exists(file_path))
         os.remove(file_path)
 
-    def test_download_stock_data_invalid_input(self):
+    @mock.patch('backend.stock_data_manager.yf.download')
+    def test_download_stock_data_invalid_input_type(self, mock_download):
         """
-        Test download with invalid input
+        Test download with invalid input type
+        (using mock to simulate yfinance download)
         """
-        num = download_stock_data('invalid', '1d')
-        self.assertEqual(num, 0)
+        mock_download.return_value = pd.DataFrame({"Close": [100, 200, 300]})
+        with self.assertRaises(TypeError):
+            download_stock_data('test_ticker', 1)
+        file_path = f'{DEFAULT_DATABASE_PATH}/TEST_TICKER.csv'
+        self.assertFalse(os.path.exists(file_path))
+
+    @mock.patch('backend.stock_data_manager.yf.download')
+    def test_download_stock_data_invalid_period(self, mock_download):
+        """
+        Test download with invalid period input
+        (using mock to simulate yfinance download)
+        """
+        mock_download.return_value = pd.DataFrame({"Close": [100, 200, 300]})
+        with self.assertRaises(ValueError):
+            download_stock_data('test_ticker', '1')
+        file_path = f'{DEFAULT_DATABASE_PATH}/TEST_TICKER.csv'
+        self.assertFalse(os.path.exists(file_path))
+
+    @mock.patch('backend.stock_data_manager.yf.download')
+    def test_download_stock_data_invalid_ticker(self, mock_download):
+        """
+        Test download with invalid ticker input
+        (using mock to simulate yfinance download)
+        """
+        mock_download.return_value = pd.DataFrame()
+        with self.assertRaises(ValueError):
+            download_stock_data('invalid', '1d')
         file_path = f'{DEFAULT_DATABASE_PATH}/INVALID.csv'
         self.assertFalse(os.path.exists(file_path))
 
@@ -63,13 +91,15 @@ class TestStockDataManager(unittest.TestCase):
     def test_update_stock_data(self, mock_download):
         """
         Test update stock database
-        (using mock to avoid changing database)
+        (using mock to simulate yfinance download)
         """
         mock_download.return_value = pd.DataFrame()
-        tikers = update_stock_data()
-        self.assertIsInstance(tikers, list)
+        tickers = update_stock_data()
+        self.assertIsInstance(tickers, list)
+        for ticker in tickers:
+            file_path = f'{DEFAULT_DATABASE_PATH}/{ticker}.csv'
+            self.assertTrue(os.path.exists(file_path))
 
-    
     @mock.patch("backend.stock_data_manager.pd.read_csv")
     def test_get_stock_data(self, mock_read_csv):
         """
@@ -86,6 +116,8 @@ class TestStockDataManager(unittest.TestCase):
         """
         Test fetch non-existing stock data from database
         """
+        with self.assertRaises(TypeError):
+            get_stock_data(1)
         with self.assertRaises(ValueError):
             get_stock_data('NON_EXISTENT_SYMBOL')
 
@@ -109,9 +141,34 @@ class TestStockDataManager(unittest.TestCase):
         """
         Test fetch filtered stock data from database with invalid input
         """
+        with self.assertRaises(TypeError):
+            get_filtered_stock_data('MSFT', 20240101, '2023/01/0')
         with self.assertRaises(ValueError):
             get_filtered_stock_data('MSFT', '2024/01/01', '2023/01/0')
 
+    def test_get_last_n_days_valid(self):
+        """
+        Test get data of n last days from dataframe with valid input
+        (num of days > len(dataframe))
+        """
+        test_df = pd.DataFrame({"Date": ['2023/01/0', '2023/10/01',
+                                         '2024/11/01','2024/01/01']})
+        test_result = get_last_n_days(test_df,6)
+        self.assertIsInstance(test_result, pd.DataFrame)
+        self.assertEqual(len(test_result), 4)
+
+    def test_get_last_n_days_invalid(self):
+        """
+        Test get data of n last days from dataframe with invalid input
+        """
+        test_df = pd.DataFrame({"Date": ['2023/01/0', '2023/10/01',
+                                         '2024/11/01','2024/01/01']})
+        with self.assertRaises(TypeError):
+            get_last_n_days(['2023/01/0'],2)
+        with self.assertRaises(TypeError):
+            get_last_n_days(test_df,"1")
+        with self.assertRaises(ValueError):
+            get_last_n_days(test_df,-1)
 
 if __name__ == '__main__':
     unittest.main()
