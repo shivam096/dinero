@@ -1,4 +1,9 @@
-"""Module for analyzing stock data and fetching relevant news articles."""
+"""Module for analyzing stock data and fetching relevant news articles.
+
+    Function:
+        - find_count_value_change
+        - get_filter_dates
+"""
 
 from pprint import pprint
 import pandas as pd
@@ -7,7 +12,7 @@ import numpy as np
 from backend.req import get_news_articles
 
 
-def find_count_value_change(file : str, value_change: int) -> list:
+def find_count_value_change(file: str, value_change: int) -> list:
     """
     Analyzes stock data to find dates with a specified value change percentage.
 
@@ -18,22 +23,30 @@ def find_count_value_change(file : str, value_change: int) -> list:
     Returns:
         list: A list of dates where the value change percentage meets the criteria.
     """
+    try:
+        stock_data = pd.read_csv(file)
 
-    stock_data = pd.read_csv(file)
+        stock_data['Value Change'] = stock_data['Close'] - stock_data['Open']
+        stock_data['Percent Change'] = (stock_data['Value Change'] / stock_data['Open']) * 100
 
-    stock_data['Value Change'] = stock_data['Close'] - stock_data['Open']
-    stock_data['Percent Change'] = (stock_data['Value Change']/stock_data['Open'])*100
+        if value_change >= 0:
+            change_df = stock_data[stock_data['Percent Change'] >= value_change]
+        else:
+            change_df = stock_data[stock_data['Percent Change'] <= value_change]
 
-    if value_change >= 0:
-        change_df = stock_data[stock_data['Percent Change']>=value_change]
-    else:
-        change_df = stock_data[stock_data['Percent Change']<=value_change]
+        return change_df['Date'].to_list()
+    except FileNotFoundError as e:
+        print(f"Error: File not found - {e}")
+        return None
+    except pd.errors.EmptyDataError as e:
+        print(f"Error: Empty data in CSV file - {e}")
+        return None
+    except Exception as e:
+        print(f"Error in find_count_value_change: {e}")
+        return None
 
-    return change_df['Date'].to_list()
 
-
-
-def get_filter_dates(file_path: str, percent_change: int, stock_ticker : str):
+def get_filter_dates(file_path: str, percent_change: int, stock_ticker: str):
     """
     Fetches news articles related to stock based on percentage value change.
 
@@ -43,15 +56,33 @@ def get_filter_dates(file_path: str, percent_change: int, stock_ticker : str):
         stock_ticker (str): The ticker symbol of the stock.
 
     Returns:
-        dict: A dictionary where keys are dates with significant value changes, 
+        dict: A dictionary where keys are dates with significant value changes,
               and values are lists of news articles related to the stock on those dates.
     """
-    dates_for_articles = find_count_value_change(file_path,percent_change)
+    try:
+        dates_for_articles = find_count_value_change(file_path, percent_change)
 
-    news_articles_links = {}
+        news_articles_links = {}
 
-    for date in dates_for_articles:
-        api_response = get_news_articles(stock_ticker,date=date)        
-        news_articles_links[date] = [{'content': i['content'], 'title': i['title'], 'link': i['link'], } for i in api_response if any(stock_ticker in symbol for symbol in i['symbols'])]
-        
-    return news_articles_links
+        for date in dates_for_articles:
+            try:
+                api_response = get_news_articles(stock_ticker, date=date)
+                news_articles_links[date] = [{'content': i['content'], 'title': i['title'], 'link': i['link'], } for i in
+                                              api_response if any(stock_ticker in symbol for symbol in i['symbols'])]
+            except KeyError as e:
+                print(f"Error: Invalid data format in news articles response - {e}")
+                news_articles_links[date] = []  # Empty list for this date
+            except Exception as e:
+                print(f"Error fetching news articles for {date}: {e}")
+                news_articles_links[date] = []  # Empty list for this date
+
+        return news_articles_links
+    except FileNotFoundError as e:
+        print(f"Error: File not found - {e}")
+        return None
+    except pd.errors.EmptyDataError as e:
+        print(f"Error: Empty data in CSV file - {e}")
+        return None
+    except Exception as e:
+        print(f"Error in get_filter_dates: {e}")
+        return None
