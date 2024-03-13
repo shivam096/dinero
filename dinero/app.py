@@ -222,6 +222,7 @@ with tab2:
 with tab3:
     st.markdown(f'''<h2 style='color:{HEADING_COLOR}; text-align:
                 center;'>BEYOND HEADLINES : DECODING NEWS SENTIMENT</h2>''', unsafe_allow_html=True)
+    st.markdown(f'''<h5 style='color:{TITLE_COLOR}';>News Pertaining to {company_option} Stocks</h5>''', unsafe_allow_html=True)
 
     input_col1, input_col2 = st.columns(2)
 
@@ -305,7 +306,7 @@ with tab3:
 
 with tab4:
     selected_ticker = st.text_input('➕ Add New Ticker')
-    selected_time = st.text_input('''🕒 Input a time period
+    selected_time = st.text_input('''(Optional) 🕒 Input a time period
                                   [valid formats include days ('d'), weeks ('wk'),
                                   months ('mo'), years ('y')]''')
 
@@ -324,7 +325,7 @@ with tab4:
                 raise ValueError('''period_str formats: 'max', 'd', 'wk',
                                  'mo', 'y' (case insensitive).''')
             download_stock_data(selected_ticker, selected_time)
-            st.experimental_rerun()
+
     if st.button("🔁 Click to Update Ticker Data to the Most Recent"):
         update_stock_data()
-        st.experimental_rerun()
+
