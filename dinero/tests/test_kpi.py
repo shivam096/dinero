@@ -81,6 +81,22 @@ class TestKPIManager(unittest.TestCase):
         self.assertIsInstance(result_df, pd.DataFrame)
         self.assertListEqual(list(result_df['Date']), list(mock_data['Date']))
 
+    def test_formatted_dataframe_with_invalid_data_type(self):
+        """Test _formatted_dataframe with invalid data type for data parameter."""
+        mock_data = "not a dataframe"
+        mock_indicator = pd.Series([1, 2, 3])
+        with self.assertRaises(TypeError) as context:
+            _formatted_dataframe(mock_data, mock_indicator, 'TestName')
+        self.assertTrue("data must be a pandas DataFrame" in str(context.exception))
+
+    def test_formatted_dataframe_with_invalid_name_type(self):
+        """Test _formatted_dataframe with invalid data type for name parameter."""
+        mock_data = pd.DataFrame({'Date': ['2023-01-01', '2023-01-02'], 'Close': [100, 200]})
+        mock_indicator = pd.Series([1, 2])
+        with self.assertRaises(TypeError) as context:
+            _formatted_dataframe(mock_data, mock_indicator, 123)
+        self.assertTrue("name must be a string" in str(context.exception))
+
 
 # This allows the test suite to be run from the command line
 if __name__ == "__main__":
