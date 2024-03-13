@@ -77,6 +77,4 @@ def get_sentiments(stock_symbol, percent_change):
 
     except ValueError as e:
         print(f"Value Error raised: {e}")
-    except Exception as e:
-        print(f"An error occurred: {e}")
         return None

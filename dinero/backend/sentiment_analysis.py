@@ -28,13 +28,10 @@ def get_sentiment_value(title_list: list) -> dict:
     senti_dict = {}
     analyzer = SentimentIntensityAnalyzer()
     for sentence in title_list:
-        try:
-            content = sentence['content']
-            title = sentence['title']
-            link = sentence['link']
-            vs = analyzer.polarity_scores(content)
-            senti_dict[title] = {'sentiment_score': vs, 'link': link}
-        except Exception as e:
-            print(f"Error occurred while processing: {e}")
+        content = sentence['content']
+        title = sentence['title']
+        link = sentence['link']
+        vs = analyzer.polarity_scores(content)
+        senti_dict[title] = {'sentiment_score': vs, 'link': link}
 
     return senti_dict

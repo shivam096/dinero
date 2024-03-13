@@ -5,9 +5,7 @@
         - get_filter_dates
 """
 
-from pprint import pprint
 import pandas as pd
-import numpy as np
 
 from backend.req import get_news_articles
 
@@ -35,8 +33,8 @@ def find_count_value_change(file: str, value_change: int) -> list:
             change_df = stock_data[stock_data['Percent Change'] <= value_change]
 
         return change_df['Date'].to_list()
-    except Exception as e:
-        print(f"Error in find_count_value_change: {e}")
+    except FileNotFoundError as e:
+        print(f"File Not Found: {e}")
         return None
 
 
@@ -53,24 +51,18 @@ def get_filter_dates(file_path: str, percent_change: int, stock_ticker: str):
         dict: A dictionary where keys are dates with significant value changes,
               and values are lists of news articles related to the stock on those dates.
     """
-    try:
-        dates_for_articles = find_count_value_change(file_path, percent_change)
+    dates_for_articles = find_count_value_change(file_path, percent_change)
 
-        news_articles_links = {}
+    news_articles_links = {}
 
-        for date in dates_for_articles:
-            try:
-                api_response = get_news_articles(stock_ticker, date=date)
-                news_articles_links[date] = [{'content': i['content'], 'title': i['title'], 'link': i['link'], } for i in
-                                              api_response if any(stock_ticker in symbol for symbol in i['symbols'])]
-            except KeyError as e:
-                print(f"Error: Invalid data format in news articles response - {e}")
-                news_articles_links[date] = []  # Empty list for this date
-            except Exception as e:
-                print(f"Error fetching news articles for {date}: {e}")
-                news_articles_links[date] = []  # Empty list for this date
-
-        return news_articles_links
-    except Exception as e:
-        print(f"Error in get_filter_dates: {e}")
-        return None
+    for date in dates_for_articles:
+        try:
+            api_response = get_news_articles(stock_ticker, date=date)
+            news_articles_links[date] = [{'content': i['content'],'title': i['title'],
+                                          'link': i['link'], } for i in
+                                            api_response if any(stock_ticker in symbol
+                                                                for symbol in i['symbols'])]
+        except KeyError as e:
+            print(f"Error: Invalid data format in news articles response - {e}")
+            news_articles_links[date] = []  # Empty list for this date
+    return news_articles_links
