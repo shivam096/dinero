@@ -90,7 +90,7 @@ kpi_description_mapping = {
 }
 
 kpi_chart_info_mapping = {
-"MA": f'''When a stock price increeases above the <span style='color:{NEGATIVE_COLOR}'>
+"MA": f'''When a stock price increases above the <span style='color:{NEGATIVE_COLOR}'>
         <b>moving average</b></span> line it can signal an
         <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>upward trend</i></span> and a
         <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>potential buying opportunity.
@@ -185,13 +185,15 @@ with tab1:
 
     with st.expander("🛈 How to Read a Candlestick Chart?"):
         st.markdown(f'''
-            Each candlestick represents a <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>specific time period</i></span>
+            Each candlestick represents a <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>
+            specific time period</i></span>
             (e.g., one day), displaying four key prices:
-            <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>the opening price, the closing price, the highest
-            price (high), and the lowest price (low).</i></span>
-            The body of the candlestick, typically <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>colored
-            differently for positive and negative price movements,</i></span>
-            illustrates the <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>difference between
+            <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>the opening price,
+            the closing price, the highest price (high), and the lowest price (low).</i></span>
+            The body of the candlestick, typically <span style='color:
+            {HIGHLIGHT_COLOR_BLUE}'><i>colored differently for positive
+            and negative price movements,</i></span> illustrates the
+            <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>difference between
             the opening and closing prices.</i></span> If the
             <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>closing
             price is higher than the opening price, the
@@ -240,8 +242,10 @@ with tab2:
 
 with tab3:
     st.markdown(f'''<h2 style='color:{HEADING_COLOR}; text-align:
-                center;'>BEYOND HEADLINES : DECODING NEWS SENTIMENT</h2>''', unsafe_allow_html=True)
-    st.markdown(f'''<h5 style='color:{TITLE_COLOR}';>News Pertaining to {company_option} Stocks</h5>''', unsafe_allow_html=True)
+                center;'>BEYOND HEADLINES : DECODING NEWS SENTIMENT</h2>'''
+                , unsafe_allow_html=True)
+    st.markdown(f'''<h5 style='color:{TITLE_COLOR}';>News Pertaining to
+                {company_option} Stocks</h5>''', unsafe_allow_html=True)
 
     input_col1, input_col2 = st.columns(2)
 
@@ -344,7 +348,5 @@ with tab4:
                 raise ValueError('''period_str formats: 'max', 'd', 'wk',
                                  'mo', 'y' (case insensitive).''')
             download_stock_data(selected_ticker, selected_time)
-
     if st.button("🔁 Click to Update Ticker Data to the Most Recent"):
         update_stock_data()
-
