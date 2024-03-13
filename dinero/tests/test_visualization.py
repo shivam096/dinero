@@ -27,17 +27,19 @@ class TestVisualization(unittest.TestCase):
         """
         Test the layout of the stock price candlestick chart.
 
-        Checks if the layout of the candlestick chart is as expected.
+        Checks if the layout of the candlestick chart is as expected:
+            chart type and tittles
+            tooltips
         """
         stock_price_fig = plot_stock_price('MSFT')
         self.assertIsInstance(stock_price_fig, go.Figure)
         self.assertEqual(len(stock_price_fig.data), 1)
         self.assertEqual(stock_price_fig.data[0].type, 'candlestick')
-        self.assertEqual(stock_price_fig.layout.hovermode, 'x unified')
         self.assertEqual(stock_price_fig.layout.title['text'],
-                         'MSFT Stock Candlestick Chart')
+                         'MSFT Candlestick Chart')
         self.assertEqual(stock_price_fig.layout.xaxis.title['text'], 'Date')
         self.assertEqual(stock_price_fig.layout.yaxis.title['text'], 'Price')
+        self.assertEqual(stock_price_fig.layout.hovermode, 'x unified')
 
     def test_plot_stock_price_selector_view_adjustment(self):
         """
@@ -63,9 +65,9 @@ class TestVisualization(unittest.TestCase):
 
     def test_plot_kpi_ma(self):
         """
-        Test plotting Moving Average (MA) on the stock price chart.
+        Test technical indicaters plotting using Moving Average (MA).
 
-        Checks if Moving Average is correctly added to the stock price candlestick chart.
+        Checks if MA trace is correctly added to the stock price candlestick chart.
         """
         stock_price_fig = plot_stock_price('MSFT')
         kpi_fig = plot_kpis(stock_price_fig, 'MSFT', 50, 'MA')
@@ -80,7 +82,7 @@ class TestVisualization(unittest.TestCase):
         Test plotting other technical indicators on the stock price chart.
 
         Checks if other technical indicators are correctly added to
-        the stock price candlestick chart.
+        the plot groups with the stock price chart.
         """
         stock_price_fig = plot_stock_price('MSFT')
         kpi_fig = plot_kpis(stock_price_fig, 'MSFT', 50, 'ROC')
@@ -89,7 +91,7 @@ class TestVisualization(unittest.TestCase):
                          'ROC for MSFT')
         self.assertEqual(len(kpi_fig.data), 2)
         self.assertEqual(kpi_fig.data[0].type, 'scatter')
-        self.assertEqual(kpi_fig.data[0].name, 'Stock Close Price')
+        self.assertEqual(kpi_fig.data[0].name, 'Close Price')
         self.assertEqual(kpi_fig.data[1].type, 'scatter')
         self.assertEqual(kpi_fig.data[1].name, 'ROC')
 
