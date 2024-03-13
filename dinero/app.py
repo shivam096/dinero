@@ -35,7 +35,7 @@ from backend.stock_data_manager import (
 from backend.processing import get_sentiments
 
 
-
+#st.set_theme('dark')
 st.set_page_config(layout="wide")
 
 HEADING_COLOR = "#86B6F6"
@@ -247,7 +247,7 @@ with tab3:
 
     with input_col1:
         number_of_days = st.number_input('''Select News Date Range 📅
-                                         (eg. 30 days, 60 days)''', value=90, format='%d')
+                                         (eg. 3 days,10 days)''', value=7, format='%d')
 
     with input_col2:
         percentage_change_option = st.number_input('''Choose Stock Price Change
