@@ -1,12 +1,13 @@
 """Unit tests for the KPI (Key Performance Indicators) Manager module.
 
-This module contains unittests for testing the functionality of the KPI Manager, particularly focusing on reading stock data and calculating various technical indicators.
+This module contains unittests for testing the functionality of the KPI Manager, particularly
+focusing on reading stock data and calculating various technical indicators.
 """
 import unittest
 from unittest.mock import patch
 import pandas as pd
+from backend.technical_indicators import _formatted_dataframe
 from backend.kpi_manager import get_technical_indicator
-
 
 class TestKPIManager(unittest.TestCase):
     """Tests for KPI manager and Technical indicators"""
@@ -67,6 +68,19 @@ class TestKPIManager(unittest.TestCase):
         """Ensure that an unsupported indicator type raises a ValueError."""
         with self.assertRaises(ValueError):
             get_technical_indicator("AAPL", 10, "UNKNOWN")
+
+    def test_formatted_dataframe(self):
+        """Test the _formatted_dataframe function to ensure it formats the DataFrame correctly."""
+        mock_data = pd.DataFrame({
+            'Date': ['2023-01-01', '2023-01-02', '2023-01-03'],
+            'Dummy': [1, 2, 3]  # This column won't be used, just to simulate structure
+        })
+        mock_indicator = pd.Series([0.1, 0.5, 0.9], name='BBP')
+        result_df = _formatted_dataframe(mock_data, mock_indicator, 'BBP')
+
+        self.assertIsInstance(result_df, pd.DataFrame)
+        self.assertListEqual(list(result_df['Date']), list(mock_data['Date']))
+
 
 # This allows the test suite to be run from the command line
 if __name__ == "__main__":
