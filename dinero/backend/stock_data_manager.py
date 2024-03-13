@@ -142,9 +142,6 @@ def get_filtered_stock_data(ticker_symbol, start_date='1900-01-01', end_date='')
 
     return stock_data.query(f"'{start_date}' <= Date <= '{end_date}'")
 
-
-import pandas as pd
-
 def get_last_n_days(df, n_days):
     """
     Extracts the last n_days rows from the DataFrame.
@@ -164,22 +161,18 @@ def get_last_n_days(df, n_days):
     TypeError:
         If the number of days enetered is not an integer
     """
-    try:
-        # Ensure n_days is a positive integer
-        if not isinstance(n_days, int):
-            raise TypeError("Number of Days must be an Integer")
-        if n_days <= 0:
-            raise ValueError("Number of days must be a positive integer")
 
-        # Check if n_days exceeds the number of rows in the DataFrame
-        if n_days >= len(df):
-            return df  # Return the entire DataFrame
+    # Ensure n_days is a positive integer
+    if not isinstance(n_days, int):
+        raise TypeError("Number of Days must be an Integer")
+    if n_days <= 0:
+        raise ValueError("Number of days must be a positive integer")
 
-        # Get the last n_days rows from the DataFrame
-        last_n_days_df = df.iloc[-n_days:]
+    # Check if n_days exceeds the number of rows in the DataFrame
+    if n_days >= len(df):
+        return df  # Return the entire DataFrame
 
-        return last_n_days_df
+    # Get the last n_days rows from the DataFrame
+    last_n_days_df = df.iloc[-n_days:]
 
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return None
+    return last_n_days_df
