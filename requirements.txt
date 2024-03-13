@@ -90,3 +90,4 @@ yfinance==0.2.37
 zipp==3.17.0
 pylint==2.9.6
 astroid==2.6.6
+build==1.1.1
