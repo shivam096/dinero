@@ -25,7 +25,7 @@ def get_news_articles(ticker: str, date: str):
         response.raise_for_status()  # Raise an exception for HTTP errors (status codes >= 400)
         data = response.json()
         return data
-    except requests.RequestException as e:
-        print(f"Error retrieving news articles: {e}")
+    except requests.RequestException as error:
+        print(f"Error retrieving news articles: {error}")
         return None
     

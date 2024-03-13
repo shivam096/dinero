@@ -29,13 +29,13 @@ class TestSentimentAnalysis(unittest.TestCase):
     def test_sentiment_analysis(self):
         """Test sentiment analysis function."""
         expected_result = {
-            'Positive title': {'sentiment_score': 
+            'Positive title': {'sentiment_score':
                 {'neg': 0.0, 'neu': 0.406, 'pos': 0.594, 'compound': 0.6588},
                 'link': 'http://example.com/positive'},
-            'Negative title': {'sentiment_score': 
+            'Negative title': {'sentiment_score':
                 {'neg': 0.756, 'neu': 0.244, 'pos': 0.0, 'compound': -0.4767},
                                'link': 'http://example.com/negative'},
-            'Neutral title': {'sentiment_score': 
+            'Neutral title': {'sentiment_score':
                 {'neg': 0.0, 'neu': 0.612, 'pos': 0.388, 'compound': 0.2263},
                 'link': 'http://example.com/neutral'}
         }

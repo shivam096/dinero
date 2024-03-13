@@ -61,16 +61,16 @@ class TestStreamlitApp(unittest.TestCase):
         This test checks if the application loads without raising any exceptions.
         """
         mock_get_sentiment.return_value = self.mocked_sentiment_dataframe
-        at = AppTest.from_file("../app.py").run()
-        assert not at.exception
+        app_test= AppTest.from_file("../app.py").run()
+        assert not app_test.exception
 
     def test_number_and_titles_of_tabs(self,mock_get_sentiment):
         """
         This test verifies if the titles of the tabs match the expected labels.
         """
         mock_get_sentiment.return_value = self.mocked_sentiment_dataframe
-        at = AppTest.from_file("../app.py").run()
-        at = AppTest.from_file("../app.py").run()
+        app_test= AppTest.from_file("../app.py").run()
+        app_test= AppTest.from_file("../app.py").run()
 
         expected_labels = ["📈 Stock Performance Overview",
                         "🔍 Explore Stock Technical Indicators",
@@ -78,7 +78,7 @@ class TestStreamlitApp(unittest.TestCase):
                         "💡 Explore More Tickers or Update Data!"]
 
         for i, expected_label in enumerate(expected_labels):
-            assert at.tabs[i].label == expected_label
+            assert app_test.tabs[i].label == expected_label
 
     def test_stock_options(self,mock_get_sentiment):
         """
@@ -87,12 +87,12 @@ class TestStreamlitApp(unittest.TestCase):
         if the action on a select button successfully runs in the application.
         """
         mock_get_sentiment.return_value = self.mocked_sentiment_dataframe
-        at = AppTest.from_file("../app.py").run()
-        at = AppTest.from_file("../app.py").run()
-        assert len(at.tabs[0].selectbox[0].label) >= 5
+        app_test= AppTest.from_file("../app.py").run()
+        app_test= AppTest.from_file("../app.py").run()
+        assert len(app_test.tabs[0].selectbox[0].label) >= 5
 
-        at.tabs[0].selectbox[0].select_index(0).run()
-        assert not at.exception
+        app_test.tabs[0].selectbox[0].select_index(0).run()
+        assert not app_test.exception
 
     def test_technical_indicator_options(self,mock_get_sentiment):
         """
@@ -102,19 +102,19 @@ class TestStreamlitApp(unittest.TestCase):
         runs in the application.
         """
         mock_get_sentiment.return_value = self.mocked_sentiment_dataframe
-        at = AppTest.from_file("../app.py").run()
+        app_test= AppTest.from_file("../app.py").run()
 
-        at = AppTest.from_file("../app.py").run()
-        assert at.tabs[1].selectbox[0].label == 'Select Technical Indicator'
-        assert at.tabs[1].selectbox[0].options == ["MA", "RSI", "ROC", "BBP"]
+        app_test= AppTest.from_file("../app.py").run()
+        assert app_test.tabs[1].selectbox[0].label == 'Select Technical Indicator'
+        assert app_test.tabs[1].selectbox[0].options == ["MA", "RSI", "ROC", "BBP"]
 
-        at.tabs[1].selectbox[0].select_index(0).run()
-        assert not at.exception
-        assert at.tabs[1].selectbox[0].value == "MA"
+        app_test.tabs[1].selectbox[0].select_index(0).run()
+        assert not app_test.exception
+        assert app_test.tabs[1].selectbox[0].value == "MA"
 
-        at.tabs[1].selectbox[0].select_index(1).run()
-        assert not at.exception
-        assert at.tabs[1].selectbox[0].value == "RSI"
+        app_test.tabs[1].selectbox[0].select_index(1).run()
+        assert not app_test.exception
+        assert app_test.tabs[1].selectbox[0].value == "RSI"
 
     def test_technical_indicator_length(self,mock_get_sentiment):
         """
@@ -124,11 +124,11 @@ class TestStreamlitApp(unittest.TestCase):
         would run successfully in the application.
         """
         mock_get_sentiment.return_value = self.mocked_sentiment_dataframe
-        at = AppTest.from_file("../app.py").run()
-        at = AppTest.from_file("../app.py").run()
-        assert at.tabs[1].number_input[0].label == 'Input a length'
-        at.tabs[1].number_input[0].set_value(5).run()
-        assert not at.exception
+        app_test= AppTest.from_file("../app.py").run()
+        app_test= AppTest.from_file("../app.py").run()
+        assert app_test.tabs[1].number_input[0].label == 'Input a length'
+        app_test.tabs[1].number_input[0].set_value(5).run()
+        assert not app_test.exception
 
     def test_number_of_days_input(self,mock_get_sentiment):
         """
@@ -138,10 +138,10 @@ class TestStreamlitApp(unittest.TestCase):
         successfully in the application.
         """
         mock_get_sentiment.return_value = self.mocked_sentiment_dataframe
-        at = AppTest.from_file("../app.py").run()
-        at = AppTest.from_file("../app.py").run()
-        at.tabs[2].number_input[0].set_value(50).run()
-        assert not at.exception
+        app_test= AppTest.from_file("../app.py").run()
+        app_test= AppTest.from_file("../app.py").run()
+        app_test.tabs[2].number_input[0].set_value(50).run()
+        assert not app_test.exception
 
     def test_percentage_change_option(self,mock_get_sentiment):
         """
@@ -151,10 +151,10 @@ class TestStreamlitApp(unittest.TestCase):
         user input would run successfully in the application.
         """
         mock_get_sentiment.return_value = self.mocked_sentiment_dataframe
-        at = AppTest.from_file("../app.py").run()
-        at = AppTest.from_file("../app.py").run()
-        at.tabs[2].number_input[1].set_value(-5).run()
-        assert not at.exception
+        app_test= AppTest.from_file("../app.py").run()
+        app_test= AppTest.from_file("../app.py").run()
+        app_test.tabs[2].number_input[1].set_value(-5).run()
+        assert not app_test.exception
 
     def test_add_new_company_ticker_input(self,mock_get_sentiment):
         """
@@ -163,11 +163,11 @@ class TestStreamlitApp(unittest.TestCase):
         the application.
         """
         mock_get_sentiment.return_value = self.mocked_sentiment_dataframe
-        at = AppTest.from_file("../app.py").run()
-        at = AppTest.from_file("../app.py").run()
-        assert at.tabs[3].text_input[0].label == '➕ Add New Ticker'
-        assert at.tabs[3].text_input[0].set_value('AMZN').run()
-        assert not at.exception
+        app_test= AppTest.from_file("../app.py").run()
+        app_test= AppTest.from_file("../app.py").run()
+        assert app_test.tabs[3].text_input[0].label == '➕ Add New Ticker'
+        assert app_test.tabs[3].text_input[0].set_value('AMZN').run()
+        assert not app_test.exception
 
     def test_add_new_ticker_time_period_input(self,mock_get_sentiment):
         """
@@ -176,10 +176,10 @@ class TestStreamlitApp(unittest.TestCase):
         and verifies if any valid user input would run successfully in the application.
         """
         mock_get_sentiment.return_value = self.mocked_sentiment_dataframe
-        at = AppTest.from_file("../app.py").run()
-        at = AppTest.from_file("../app.py").run()
-        at.tabs[3].text_input[1].set_value('5d').run()
-        assert not at.exception
+        app_test= AppTest.from_file("../app.py").run()
+        app_test= AppTest.from_file("../app.py").run()
+        app_test.tabs[3].text_input[1].set_value('5d').run()
+        assert not app_test.exception
 
     def update_data_for_new_ticker(self,mock_get_sentiment):
         """
@@ -187,11 +187,11 @@ class TestStreamlitApp(unittest.TestCase):
         This test verifies the functionality of updating data for a newly added ticker.
         """
         mock_get_sentiment.return_value = self.mocked_sentiment_dataframe
-        at = AppTest.from_file("../app.py").run()
-        at = AppTest.from_file("../app.py").run()
-        assert at.tabs[3].button[0].label == "🔁 Click to Update Ticker Data to the Most Recent"
-        at.tabs[3].button[0].click().run()
-        assert not at.exception
+        app_test= AppTest.from_file("../app.py").run()
+        app_test= AppTest.from_file("../app.py").run()
+        assert app_test.tabs[3].button[0].label=="🔁 Click to Update Ticker Data to the Most Recent"
+        app_test.tabs[3].button[0].click().run()
+        assert not app_test.exception
 
 if __name__ == '__main__':
     unittest.main()

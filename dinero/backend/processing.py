@@ -57,7 +57,7 @@ def get_sentiments(stock_symbol, percent_change):
         percent_change (float): The percent change threshold for filtering dates.
 
     Returns:
-        pd.DataFrame or None: A DataFrame containing sentiment analysis data, 
+        pd.DataFrame or None: A DataFrame containing sentiment analysis data,
                             or None if an error occurs.
     """
     sentiment_data = {}
@@ -75,6 +75,6 @@ def get_sentiments(stock_symbol, percent_change):
         data_frame = process_dict_to_df(sentiment_data=sentiment_data)
         return data_frame
 
-    except ValueError as e:
-        print(f"Value Error raised: {e}")
+    except ValueError as error:
+        print(f"Value Error raised: {error}")
         return None
