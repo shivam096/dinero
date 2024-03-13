@@ -87,7 +87,8 @@ jobs:
       # Next step: run pylint. Anything less than 10/10 will fail.
       - name: Lint with pylint
         run: |
-          pylint dinero/**/*.py || exit 0
+          pylint dinero/**/*.py
+
 
       # Next step: run the unit tests with code coverage.
       - name: Unit tests
