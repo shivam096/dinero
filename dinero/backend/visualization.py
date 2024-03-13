@@ -13,6 +13,15 @@ from plotly.subplots import make_subplots
 from backend.stock_data_manager import get_stock_data
 from backend.kpi_manager import get_technical_indicator
 
+TIME_BUTTONS = [
+    {'step': 'all', 'label': 'All'},
+    {'count': 3, 'step': 'year', 'stepmode': 'backward', 'label': '3 Year'},
+    {'count': 1, 'step': 'year', 'stepmode': 'backward', 'label': '1 Year'},
+    {'count': 6, 'step': 'month', 'stepmode': 'backward', 'label': '6 Month'},
+    {'count': 1, 'step': 'month', 'stepmode': 'backward', 'label': '1 Month'},
+    {'count': 1, 'step': 'year', 'stepmode': 'todate', 'label': '1 Year To Date'}
+]
+
 def plot_stock_price(ticker_symbol):
     """
     Plot a candlestick chart for the given stock ticker symbol.
@@ -42,15 +51,7 @@ def plot_stock_price(ticker_symbol):
     fig_candlestick.update_layout(title=f'Candlestick Chart',
                                 xaxis_title="Date", yaxis_title="Price")
     fig_candlestick.update_layout(hovermode="x unified")
-    time_buttons = [
-        {'step': 'all', 'label': 'All'},
-        {'count': 3, 'step': 'year', 'stepmode': 'backward', 'label': '3 Year'},
-        {'count': 1, 'step': 'year', 'stepmode': 'backward', 'label': '1 Year'},
-        {'count': 6, 'step': 'month', 'stepmode': 'backward', 'label': '6 Month'},
-        {'count': 1, 'step': 'month', 'stepmode': 'backward', 'label': '1 Month'},
-        {'count': 1, 'step': 'year', 'stepmode': 'todate', 'label': '1 Year To Date'}
-    ]
-    fig_candlestick.update_xaxes(rangeselector={'buttons': time_buttons})
+    fig_candlestick.update_xaxes(rangeselector={'buttons': TIME_BUTTONS})
     fig_candlestick.update_yaxes(autorange=True, fixedrange = False)
 
     return fig_candlestick
@@ -113,15 +114,6 @@ def plot_kpis(stock_fig, ticker_symbol, length, kpi_name):
     kpi_fig.update_traces(xaxis='x1')
     kpi_fig.update_layout(title=f'{kpi_name} for {ticker_symbol}',
                           xaxis_title="Date", yaxis_title="Price")
-
-    time_buttons = [
-        {'step': 'all', 'label': 'All'},
-        {'count': 3, 'step': 'year', 'stepmode': 'backward', 'label': '3 Year'},
-        {'count': 1, 'step': 'year', 'stepmode': 'backward', 'label': '1 Year'},
-        {'count': 6, 'step': 'month', 'stepmode': 'backward', 'label': '6 Month'},
-        {'count': 1, 'step': 'month', 'stepmode': 'backward', 'label': '1 Month'},
-        {'count': 1, 'step': 'year', 'stepmode': 'todate', 'label': '1 Year To Date'}
-    ]
-    kpi_fig.update_xaxes(rangeselector={'buttons': time_buttons})
+    kpi_fig.update_xaxes(rangeselector={'buttons': TIME_BUTTONS})
     kpi_fig.update_yaxes(autorange=True, fixedrange = False)
     return kpi_fig
