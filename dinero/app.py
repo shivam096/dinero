@@ -35,7 +35,6 @@ from backend.stock_data_manager import (
 )
 from backend.processing import get_sentiments
 
-
 #st.set_theme('dark')
 st.set_page_config(layout="wide")
 
@@ -161,8 +160,6 @@ st.sidebar.markdown(f'''<h2 style='color:{NEWS_ARTICLE_COLOR};'>
                 with stock price movements! 📈🔍</h2>''',
                 unsafe_allow_html=True)
 st.sidebar.markdown('''<hr class="horizontal-line">''', unsafe_allow_html=True)
-st.sidebar.markdown('''Refer to our [tool guide](examples/tool_guide_for_user.md)
-            for detailed instructions on how to use the stock analysis tool''')
 st.sidebar.markdown('''
     Refer to our documentation for more information on these complex financial terms:
     [Documentation](https://drive.google.com/file/d/1H8gJ8gjN8jLVqtD8mAAAB5-VOmehDnhr/view?usp=sharing)

@@ -1,7 +1,7 @@
 
 # Functional Specification
 
-## Background. 
+## Background.
 
 In the realm of financial markets, data has become the lifeblood of informed decision-making and strategic investment. The ability to harness and analyze vast streams of data has become increasingly crucial for investors seeking to navigate the complex landscape of stocks, bonds, and other financial instruments.
 
@@ -75,12 +75,12 @@ This project utilizes the [Yahoo Finance](https://finance.yahoo.com/) open-sourc
 
 ### Objective 3: System displays KPIs of interest to the user for specific stocks
 
-**User**: Accesses the main page where the filter by company is selected. User clicks a button for the technical indicator of interest and company stock
+**User**: Accesses the main page where the filter by company is selected. User clicks a button for the technical indicator and input length of period of interest
 
 **System**: Displays the technical indicator of interest and company stock
 
 ### Objective 4: System displays sentiment analysis results based on users interest
 
-**User**: Select company name and time frame that they are interested in.
+**User**: Input time frame and percentage changes in price that they are interested in.
 
 **System**: Retrieve relevent stock and news data, apply sentiment analysis, and display the results.
