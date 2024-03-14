@@ -1,7 +1,7 @@
 # dinero
 Repository for *DATA 515 : Software Design for Data Scientists*
 
-![Build/Test Workflow](https://github.com/shivam096/dinero/actions/workflows/build_test.yml/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/shivam096/dinero/badge.svg?branch=main)](https://coveralls.io/github/UWDATA515/ci_example?branch=main)
+![Build/Test Workflow](https://github.com/shivam096/dinero/actions/workflows/build_test.yml/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/shivam096/dinero/badge.svg?branch=main)](https://coveralls.io/github/shivam096/dinero)
 
 ## Project Type
  Creating Reusable Data
@@ -29,12 +29,13 @@ Additionally, which keywords are most associated with significant events and the
  1. Analyzing how our technical indicators compare to existing market forecasts in terms of effectiveness and performance.
  2. Extending our study of interest to more than 5 companies
 
-## Dataset
-This project utilizes the [Yahoo Finance](https://finance.yahoo.com/) open-source API to access relevant data for our analysis. We employ two distinct API calls to acquire two primary datasets:
+## Data sources. 
 
-1. **Company Stock Data:** This static dataset retrieves historical values for key metrics like open price, close price, volume, and adjusted price for the chosen companies and timeframe.
+This project utilizes the [Yahoo Finance](https://finance.yahoo.com/) open-source API and [EODHD](https://eodhd.com/?utm_source=google_ads&utm_medium=cpc&utm_campaign=us_reborn_&utm_content=us_generic&utm_term=financial%20data%20apis&gad_source=1&gclid=Cj0KCQiA5rGuBhCnARIsAN11vgTVWuR3EPPyvNhiJhll2IfgY-f3bSVNVy3Ll0YRi9-XW7SRaAzwDaoaAtmHEALw_wcB) API to access relevant data for our analysis.
 
-2. **News and Events:** This call retrieves a dynamic dataset of news articles and events related to the specific companies within the defined date range. Each news item in this dataset will include information like title, summary, and original URL, enabling further exploration and analysis.
+1. **Company Stock Price**: This static dataset retrieves historical stock data from Yahoo for key metrics like open price, close price, volume, and adjusted price for the chosen companies and timeframe.
+
+2. **Stock Market and Financial News**: This dataset is biult on EODHD news API, retrieving news articles and events related to the specific companies within the defined date range. Each news item in this dataset will include information like title, date, content, and original URL, enabling further exploration and analysis.
 
 ## Technical dependency
 The application supports only Python versions 3.9 and 3.10. Python 3.11 incorporation is still in the works.
