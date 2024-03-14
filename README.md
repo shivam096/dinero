@@ -1,6 +1,7 @@
 # dinero
 Repository for *DATA 515 : Software Design for Data Scientists*
 
+
 ## Project Type
  Creating Reusable Data 
 
@@ -33,3 +34,6 @@ This project utilizes the [Yahoo Finance](https://finance.yahoo.com/) open-sourc
 1. **Company Stock Data:** This static dataset retrieves historical values for key metrics like open price, close price, volume, and adjusted price for the chosen companies and timeframe.
 
 2. **News and Events:** This call retrieves a dynamic dataset of news articles and events related to the specific companies within the defined date range. Each news item in this dataset will include information like title, summary, and original URL, enabling further exploration and analysis.
+
+## Technical dependency
+The application supports only Python versions 3.9 and 3.10. Python 3.11 incorporation is still in the works.
