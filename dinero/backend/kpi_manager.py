@@ -4,11 +4,9 @@ compute various technical indicators such as Simple Moving Average (MA),
 Relative Strength Index (RSI), Rate of Change (ROC), and Bollinger Bands Percent (BBP)
 by utilizing the technical_indicators module.
 """
-import os
-import pandas as pd
 import backend.technical_indicators as ti
-
 from backend.stock_data_manager import get_stock_data
+
 
 # Fetches Technical Indicator
 def get_technical_indicator(ticker_symbol, length, indicator):

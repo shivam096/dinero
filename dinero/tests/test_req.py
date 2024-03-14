@@ -1,11 +1,22 @@
+"""
+    test-req.py
+===========
+
+This module contains unit tests for the request module
+
+Classes:
+    TestGetNewsArticles: Test cases for the module.
+"""
 import unittest
 from unittest.mock import patch
 from backend.req import get_news_articles
 
 class TestGetNewsArticles(unittest.TestCase):
+    """Test case for the get_news_articles function."""
 
     @patch('backend.req.requests.get')
     def test_get_news_articles_success(self, mock_get):
+        """Test get_news_articles function for successful API response."""
         # Arrange
         mock_response = {
             "status": "success",
@@ -31,6 +42,7 @@ class TestGetNewsArticles(unittest.TestCase):
 
     @patch('backend.req.requests.get')
     def test_get_news_articles_api_failure(self, mock_get):
+        """Test get_news_articles function for API failure response."""
         # Arrange
         mock_response = {"status": "error", "message": "API error"}
         mock_get.return_value.json.return_value = mock_response

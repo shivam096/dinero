@@ -21,6 +21,7 @@ Example Usage:
     $ streamlit run app.py
 
 """
+# Importing required libraries
 import streamlit as st
 import pandas as pd
 
@@ -34,10 +35,10 @@ from backend.stock_data_manager import (
 )
 from backend.processing import get_sentiments
 
-
-
+#st.set_theme('dark')
 st.set_page_config(layout="wide")
 
+# Defining colors for better readability
 HEADING_COLOR = "#86B6F6"
 NEWS_ARTICLE_COLOR = "#E3DFFD"
 NEWS_ARTICLE_DATE_COLOR = "#89CFF3"
@@ -47,6 +48,7 @@ NEUTRAL_COLOR = "#B4B4B8"    # Yellow
 NEGATIVE_COLOR = "#D24545"   # Red
 HIGHLIGHT_COLOR_BLUE = "#AEDEFC"
 
+# Dictionaries created to MAP elements with HTML strings
 kpi_description_mapping = {
     "MA" : f'''The <span style='color:{NEGATIVE_COLOR}'><b>Moving Average (MA)
             </b></span> helps <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>smooth out
@@ -90,7 +92,7 @@ kpi_description_mapping = {
 }
 
 kpi_chart_info_mapping = {
-"MA": f'''When a stock price increeases above the <span style='color:{NEGATIVE_COLOR}'>
+"MA": f'''When a stock price increases above the <span style='color:{NEGATIVE_COLOR}'>
         <b>moving average</b></span> line it can signal an
         <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>upward trend</i></span> and a
         <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>potential buying opportunity.
@@ -139,11 +141,37 @@ kpi_chart_info_mapping = {
 
 st.image("frontend/logo.png", use_column_width=True)
 
+# Sidebar content
+st.sidebar.markdown(f'''<h1 style='color:{NEWS_ARTICLE_DATE_COLOR}; text-align: center;'>
+                📊 Welcome the the Stock Analysis Platform!</h1>''',
+                unsafe_allow_html=True)
+st.sidebar.markdown(f'''<h2 style='color:{NEWS_ARTICLE_COLOR};'>
+                Click on the various tabs to dive deep into stock data and
+                news headlines! 💼📰</h2>''',
+                unsafe_allow_html=True)
+st.sidebar.markdown(f'''<h2 style='color:{NEWS_ARTICLE_COLOR};'>
+                Use the filters to select company, date range,
+                and technical indicators, to ensure you get
+                tailored insights! 📅🔍</h2>''',
+                unsafe_allow_html=True)
+st.sidebar.markdown(f'''<h2 style='color:{NEWS_ARTICLE_COLOR};'>
+                Understand the sentiment and keywords of
+                news events, and analyze their correlation
+                with stock price movements! 📈🔍</h2>''',
+                unsafe_allow_html=True)
+st.sidebar.markdown('''<hr class="horizontal-line">''', unsafe_allow_html=True)
+st.sidebar.markdown('''
+    Refer to our documentation for more information on these complex financial terms:
+    [Documentation](https://drive.google.com/file/d/1H8gJ8gjN8jLVqtD8mAAAB5-VOmehDnhr/view?usp=sharing)
+''')
+
+# Creating streamlit tabs
 tab1, tab2, tab3, tab4 = st.tabs(["📈 Stock Performance Overview",
                                   "🔍 Explore Stock Technical Indicators",
                                   "📰 Latest News Headlines and Articles",
                                   "💡 Explore More Tickers or Update Data!"])
 
+# Tab 1: Stock Performance Overview
 with tab1:
 
     company_option = st.selectbox('Choose the Company Stock you Wish to View!',
@@ -165,33 +193,33 @@ with tab1:
         fig_price.update(st.session_state.initial_view)
 
     with st.expander("🛈 How to Read a Candlestick Chart?"):
-        st.markdown(f'''Each candlestick represents a <span style='color:
-                    {HIGHLIGHT_COLOR_BLUE}'><i>specific time period</i></span>
-                    (e.g., one day), displaying four key prices:
-                    <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>
-                    the opening price, the closing price, the highest
-                    price (high), and the lowest price (low).</i></span>
-                    The body of the candlestick, typically <span style='color:
-                    {HIGHLIGHT_COLOR_BLUE}'><i>colored
-                    differently for <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>
-                    positive and negative price movements,</i></span>
-                    illustrates the <span style='color:
-                    {HIGHLIGHT_COLOR_BLUE}'><i>difference between
-                    the opening and closing prices.</i></span> If the
-                    <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>closing
-                    price is higher than the opening price, the
-                    candlestick is colored green, indicating a
-                    price increase,</i></span> while a
-                    <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>
-                    red candlestick signifies a price decrease.</i></span>
-                    The thin lines above and below the body, called shadows or
-                    wicks, represent the range between the highest
-                    and lowest prices during the period.
-                    Understanding candlestick patterns and
-                    their formations can provide insights into
-                    market sentiment and potential future price
-                    movements.''', unsafe_allow_html=True)
+        st.markdown(f'''
+            Each candlestick represents a <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>
+            specific time period</i></span>
+            (e.g., one day), displaying four key prices:
+            <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>the opening price,
+            the closing price, the highest price (high), and the lowest price (low).</i></span>
+            The body of the candlestick, typically <span style='color:
+            {HIGHLIGHT_COLOR_BLUE}'><i>colored differently for positive
+            and negative price movements,</i></span> illustrates the
+            <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>difference between
+            the opening and closing prices.</i></span> If the
+            <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>closing
+            price is higher than the opening price, the
+            candlestick is colored green, indicating a
+            price increase,</i></span> while a
+            <span style='color:{HIGHLIGHT_COLOR_BLUE}'><i>
+            red candlestick signifies a price decrease.</i></span>
+            The thin lines above and below the body, called shadows or
+            wicks, represent the range between the highest
+            and lowest prices during the period.
+            Understanding candlestick patterns and
+            their formations can provide insights into
+            market sentiment and potential future price
+            movements.
+        ''', unsafe_allow_html=True)
 
+# Tab 2: Explore Stock Technical Indicators
 with tab2:
     st.markdown(f'''<h2 style='color:{HEADING_COLOR}; text-align: center;'>
                 LEVERAGING TECHNICAL INDICATORS</h2>''', unsafe_allow_html=True)
@@ -221,15 +249,19 @@ with tab2:
     with st.expander("🛈 What do These Numbers Mean?"):
         st.markdown(kpi_chart_info_mapping[kpi_name], unsafe_allow_html=True)
 
+# Tab 3: Latest News Headlines and Articles
 with tab3:
     st.markdown(f'''<h2 style='color:{HEADING_COLOR}; text-align:
-                center;'>BEYOND HEADLINES : DECODING NEWS SENTIMENT</h2>''', unsafe_allow_html=True)
+                center;'>BEYOND HEADLINES : DECODING NEWS SENTIMENT</h2>'''
+                , unsafe_allow_html=True)
+    st.markdown(f'''<h5 style='color:{TITLE_COLOR}';>News Pertaining to
+                {company_option} Stocks</h5>''', unsafe_allow_html=True)
 
     input_col1, input_col2 = st.columns(2)
 
     with input_col1:
         number_of_days = st.number_input('''Select News Date Range 📅
-                                         (eg. 30 days, 60 days)''', value=90, format='%d')
+                                         (eg. 3 days,10 days)''', value=7, format='%d')
 
     with input_col2:
         percentage_change_option = st.number_input('''Choose Stock Price Change
@@ -305,9 +337,10 @@ with tab3:
 
                 st.markdown('<hr class="horizontal-line">', unsafe_allow_html=True)
 
+# Tab 4: Explore More Tickers or Update Data!
 with tab4:
     selected_ticker = st.text_input('➕ Add New Ticker')
-    selected_time = st.text_input('''🕒 Input a time period
+    selected_time = st.text_input('''(Optional) 🕒 Input a time period
                                   [valid formats include days ('d'), weeks ('wk'),
                                   months ('mo'), years ('y')]''')
 
@@ -326,7 +359,5 @@ with tab4:
                 raise ValueError('''period_str formats: 'max', 'd', 'wk',
                                  'mo', 'y' (case insensitive).''')
             download_stock_data(selected_ticker, selected_time)
-            st.experimental_rerun()
     if st.button("🔁 Click to Update Ticker Data to the Most Recent"):
         update_stock_data()
-        st.experimental_rerun()

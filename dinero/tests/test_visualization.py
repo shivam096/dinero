@@ -13,7 +13,8 @@ import plotly.graph_objects as go
 
 from backend.visualization import (
     plot_stock_price,
-    plot_kpis
+    plot_kpis,
+    TIME_BUTTONS
 )
 
 class TestVisualization(unittest.TestCase):
@@ -50,16 +51,8 @@ class TestVisualization(unittest.TestCase):
         and if y-axis range is set to auto.
         """
         stock_price_fig = plot_stock_price('MSFT')
-        time_buttons = [
-        {'step': 'all', 'label': 'All'},
-        {'count': 3, 'step': 'year', 'stepmode': 'backward', 'label': '3 Year'},
-        {'count': 1, 'step': 'year', 'stepmode': 'backward', 'label': '1 Year'},
-        {'count': 6, 'step': 'month', 'stepmode': 'backward', 'label': '6 Month'},
-        {'count': 1, 'step': 'month', 'stepmode': 'backward', 'label': '1 Month'},
-        {'count': 1, 'step': 'year', 'stepmode': 'todate', 'label': '1 Year To Date'}
-        ]
         self.assertEqual(len(stock_price_fig.layout.xaxis.rangeselector.buttons),
-                        len(time_buttons))
+                        len(TIME_BUTTONS))
         self.assertTrue(stock_price_fig.layout.yaxis.autorange)
         self.assertFalse(stock_price_fig.layout.yaxis.fixedrange)
 
