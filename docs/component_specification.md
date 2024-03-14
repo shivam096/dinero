@@ -2,7 +2,7 @@
 
 The system consists of three components that interact with each other accross database, backend and front end.
 
-![System Workflow](https://github.com/shivam096/dinero/blob/main/docs/System_design.png)
+![System Workflow](https://github.com/shivam096/dinero/blob/main/docs/images/System_design.png)
 
 ## Component 1. User Interface
 
@@ -242,7 +242,7 @@ function get_sentiment_value(title_list) -> dict:
 ## Interaction to accomplish use case
 
 ### Interaction Diagram - Sentiment Analysis
-![Sentiment Analysis Diagram](https://github.com/shivam096/dinero/blob/main/docs/Interaction_Diagram_2.png)
+![Sentiment Analysis Diagram](https://github.com/shivam096/dinero/blob/main/docs/images/Interaction_Diagram_2.png)
 
 ### Use Case - Sentiment Analysis
 
@@ -259,7 +259,7 @@ System: Retrieve relevent stock and news data, apply sentiment analysis, and dis
 3. News Data Proessor - Sentiment Analysis
 
 ### Interaction Diagram - KPI Plots
-![Sentiment Analysis Diagram](https://github.com/shivam096/dinero/blob/main/docs/Interaction_Diagram_1.png)
+![Sentiment Analysis Diagram](https://github.com/shivam096/dinero/blob/main/docs/images/Interaction_Diagram_1.png)
 
 ### Use Case - KPI Plots
 
