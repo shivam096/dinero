@@ -1,21 +1,22 @@
 # dinero
 Repository for *DATA 515 : Software Design for Data Scientists*
 
+![Build/Test Workflow](https://github.com/shivam096/dinero/actions/workflows/build_test.yml/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/shivam096/dinero/badge.svg?branch=main)](https://coveralls.io/github/UWDATA515/ci_example?branch=main)
 
 ## Project Type
- Creating Reusable Data 
+ Creating Reusable Data
 
-## Questions of Interest 
+## Questions of Interest
 1. Can company stock data be use to explore trends and view seasonal changes, allowing us to leverage this knowledge for deeper analysis?
 
 2. Can we leverage statistical data and historical data to calculate different technical indicators (like MACD and RSI) to identify profitable trading opportunities for specific company profiles?
 
 3. What are the Top 5 events that affected stock prices? How does the stock price response to different types of news events (e.g., earnings releases, political announcements, etc) ?
 
-4. Can we use natural language processing (NLP) techniques to analyze news articles and identify sentiment (positive, negative, neutral) associated with specific companies or events, and further correlate those sentiments with stock price movements? 
+4. Can we use natural language processing (NLP) techniques to analyze news articles and identify sentiment (positive, negative, neutral) associated with specific companies or events, and further correlate those sentiments with stock price movements?
 Additionally, which keywords are most associated with significant events and their corresponding sentiment?
 
-## Goals for Project 
+## Goals for Project
 
 1.  Analyze stock data for **five** chosen companies to provide focused insights.
 3.  Design a **user-friendly interface** that facilitates navigation between functionalities and allows visualization of stock data to identify patterns and anomalies.
@@ -24,9 +25,9 @@ Additionally, which keywords are most associated with significant events and the
 9.  Display **headlines of news events** affecting chosen companies alongside their impact on stock prices.
 11.  Show the **sentiment and keywords** associated with news events and analyze the correlation between news sentiment and stock price movements.
 
-### Stretch Goals 
+### Stretch Goals
  1. Analyzing how our technical indicators compare to existing market forecasts in terms of effectiveness and performance.
- 2. Extending our study of interest to more than 5 companies 
+ 2. Extending our study of interest to more than 5 companies
 
 ## Dataset
 This project utilizes the [Yahoo Finance](https://finance.yahoo.com/) open-source API to access relevant data for our analysis. We employ two distinct API calls to acquire two primary datasets:
