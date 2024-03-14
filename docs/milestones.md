@@ -2,8 +2,8 @@
 
 ## Task 1. Duild dataset
 
-- stock and news data from 5 companies within 3 years
-- csv and json files in google drive
+- stock data (csf files) from 5 companies within 3 years
+- req module that retrieves news data dinamically from API
 - First Priority: data before everything else
 
 ## Task 2. Define functional requirement and components
